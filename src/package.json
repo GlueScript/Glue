@@ -1,0 +1,15 @@
+{
+  "name": "Glue",
+  "version": "0.1.0",
+  "description": "Provides scripting for services",
+  "main": "index.js",
+  "respository": "git@github.com:timothy-r/Glue.git",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tim Rodger tim.rodger@gmail.com",
+  "dependencies": {
+    "express": "~4.10.4",
+    "body-parser": "~1.9.3"
+  }
+}
