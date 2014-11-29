@@ -3,7 +3,7 @@
  * Initialise logging (all the console)
  * start the server
  */
-var  winston = require('winston'),
+var winston = require('winston'),
     server = require('./server');
 
 /*
@@ -18,4 +18,8 @@ var logger = new winston.Logger({
   exitOnError: false
 });
 
-server.start();
+// use env.PORT if set
+var PORT = process.env.PORT || 8781;
+server.start(PORT);
+
+logger.log('info', 'Running on http://localhost:' + PORT);
