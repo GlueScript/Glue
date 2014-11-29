@@ -5,7 +5,10 @@ module.exports = (function() {
     var routes = express.Router();
 
     routes.get('/', function (req, res) {
-        res.json({description : "Glue - scripting for services"});
+        res.json({
+            name : 'Glue', 
+            description : "Scripting for services"
+        });
     });
 
     routes.post('/', function(req, res) {
