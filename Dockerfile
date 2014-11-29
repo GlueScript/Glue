@@ -2,7 +2,7 @@ FROM ubuntu:latest
 MAINTAINER Tim Rodger
 
 # Expose the port
-EXPOSE 8780
+EXPOSE 8781
 
 # Install dependencies
 RUN apt-get update -qq && \
