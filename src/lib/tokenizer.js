@@ -1,5 +1,7 @@
+var Token = require('./token.js');
+
 /*
- * Tokenise a glue script into its elements
+ * Tokenize a glue script into its elements
  */
 var Tokenizer = (function() {
     
@@ -20,7 +22,7 @@ var Tokenizer = (function() {
      */
     var next = function() {
         if (hasMore()){
-            return tokens[index++];
+            return new Token(tokens[index++]);
         }
     };
 

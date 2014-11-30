@@ -32,16 +32,16 @@ describe('Tokenizer', function() {
         it('should return tokens in order', function(){
             var script = 'uri >> service';
             tokenizer.init(script);
-            assert.equal('uri', tokenizer.next());
-            assert.equal('>>', tokenizer.next());
-            assert.equal('service', tokenizer.next());
+            assert.equal('uri', tokenizer.next().getValue());
+            assert.equal('>>', tokenizer.next().getValue());
+            assert.equal('service', tokenizer.next().getValue());
         });
         it('should ignore all whitespace', function(){
             var script = 'uri   >>    service';
             tokenizer.init(script);
-            assert.equal('uri', tokenizer.next());
-            assert.equal('>>', tokenizer.next());
-            assert.equal('service', tokenizer.next());
+            assert.equal('uri', tokenizer.next().getValue());
+            assert.equal('>>', tokenizer.next().getValue());
+            assert.equal('service', tokenizer.next().getValue());
         });
         it('should return undefined when no tokens exist', function(){
             var script = '';

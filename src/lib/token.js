@@ -24,5 +24,4 @@ Token.prototype.getValue = function() {
     return this.value;
 };
 
-
 module.exports = Token;
