@@ -2,7 +2,7 @@ var tokenizer = require('../src/lib/tokenizer'),
     assert = require('assert');
 
 
-describe('Tokenizer', function(){
+describe('Tokenizer', function() {
     describe('hasMore', function() {
         it('should return true when one token exists', function(){
             var script = 'uri';

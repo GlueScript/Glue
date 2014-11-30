@@ -10,7 +10,7 @@ var Parser = (function() {
     };
 
     var next = function() {
-
+        return {method: 'GET', endpoint: 'uri'};
     };
 
     return {
