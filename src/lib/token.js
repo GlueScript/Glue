@@ -15,9 +15,13 @@ Token.prototype.isOperator = function() {
 };
 
 Token.prototype.getMethod = function() {
+    if ('>>' == this.value){
+        return 'POST';
+    }
 };
 
 Token.prototype.getValue = function() {
+    return this.value;
 };
 
 
