@@ -1,4 +1,4 @@
-var parser = require('../src/lib/parser'),
+var Parser = require('../src/lib/parser'),
     assert = require('assert');
 
 
@@ -6,7 +6,7 @@ describe('Parser', function() {
     describe('next', function() {
         it('should return a command when one exists', function(){
             var script = 'uri';
-            parser.init(script);
+            var parser = new Parser(script);
             
             var command = parser.next();
             assert.equal('GET', command.method);
@@ -14,7 +14,7 @@ describe('Parser', function() {
         });
         it('should return all commands when they exist', function(){
             var script = 'uri >> service';
-            parser.init(script);
+            var parser = new Parser(script);
 
             var command = parser.next();
             assert.equal('GET', command.method);
