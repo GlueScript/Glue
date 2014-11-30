@@ -1,44 +1,24 @@
 var Token = require('./token.js');
 
 /*
- * Tokenize a glue script into its elements
+ * Tokenize a Glue script into its elements
  */
-var Tokenizer = (function() {
-    
-    var tokens = [];
+function Tokenizer(string) {
+    this.tokens = string.match(/\S+/g) || [];
+    this.index = 0;
+}
 
-    var index = 0;
+/**
+* test if there are any more tokens
+*/
+Tokenizer.prototype.hasMore = function() {
+    return (this.index < this.tokens.length);
+};
 
-    /*
-     * Initialise tokenisation
-     */
-    var init = function(string) {
-        tokens = string.match(/\S+/g) || [];
-        index = 0;
-    };
-    
-    /*
-     * Return the next token if available
-     */
-    var next = function() {
-        if (hasMore()){
-            return new Token(tokens[index++]);
-        }
-    };
-
-    /**
-     * test if there are any more tokens
-     */
-    var hasMore = function() {
-        return (index < tokens.length);
-    };
-
-    return {
-        init: init,
-        next: next,
-        hasMore: hasMore
-    };
-
-})();
+Tokenizer.prototype.next = function() {
+    if (this.hasMore()){
+         return new Token(this.tokens[this.index++]);
+    } 
+};
 
 module.exports = Tokenizer;
