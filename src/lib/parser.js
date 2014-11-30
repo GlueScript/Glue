@@ -1,4 +1,4 @@
-var tokenizer = require('./tokenizer');
+var Tokenizer = require('./tokenizer');
 
 /**
  * Take a stream of tokens and create an array of commands from a glue script
@@ -6,9 +6,11 @@ var tokenizer = require('./tokenizer');
  */
 var Parser = (function() {
     
+    var tokenizer;
+
     var init = function(string) {
         // initialise a tokenizer
-        tokenizer.init(string);
+        tokenizer = new Tokenizer(string);
     };
 
     var next = function() {
