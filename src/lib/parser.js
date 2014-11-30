@@ -1,3 +1,5 @@
+var tokenizer = require('./tokenizer');
+
 /**
  * Take a stream of tokens and create an array of commands from a glue script
  * Command is an object with a method and an endpoint
@@ -5,12 +7,35 @@
 
 var Parser = (function() {
     
-    var init = function(script) {
+    var init = function(string) {
         // initialise a tokenizer
+        tokenizer.init(string);
     };
 
     var next = function() {
-        return {method: 'GET', endpoint: 'uri'};
+        if (tokenizer.hasMore()){
+            var token = tokenizer.next();
+            // if this is an operator then get next token
+            if (isOperator(token)){
+                if (tokenizer.hasMore()){
+                    var t2 = tokenizer.next()
+                    return {method: extractMethod(token), endpoint: t2};
+                }
+            } else {
+                // else method = GET
+                return {method: 'GET', endpoint: token};
+            }
+        }
+    };
+    
+    var isOperator = function(token) {
+        return (token[0] == '>');
+    };
+    
+    var extractMethod = function(token) {
+        if ('>>' == token){
+            return 'POST';
+        }
     };
 
     return {
