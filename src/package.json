@@ -5,7 +5,7 @@
   "main": "index.js",
   "respository": "git@github.com:timothy-r/Glue.git",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ../test"
   },
   "author": "Tim Rodger tim.rodger@gmail.com",
   "dependencies": {
