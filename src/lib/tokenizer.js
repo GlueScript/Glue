@@ -1,7 +1,7 @@
 /*
  * Tokenise a glue script into its elements
  */
-var Tokenizer = (function(){
+var Tokenizer = (function() {
     
     var tokens = [];
 

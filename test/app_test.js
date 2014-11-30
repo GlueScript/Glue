@@ -1,10 +1,10 @@
-var app = require('../src/index'),
-  http = require('support/http');
+var app = require('../src/server').app,
+  http = require('http');
 
 describe('Glue',function(){
 
   before(function(done){
-    http.createServer(app,done);
+    http.createServer(app, done);
   });
 
   it('GET / should return 200',function(done){
