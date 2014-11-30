@@ -18,8 +18,7 @@ var Parser = (function() {
             // if this is an operator then get next token
             if (isOperator(token)){
                 if (tokenizer.hasMore()){
-                    var t2 = tokenizer.next()
-                    return {method: extractMethod(token), endpoint: t2};
+                    return {method: extractMethod(token), endpoint: tokenizer.next()};
                 }
             } else {
                 // else method = GET
@@ -28,6 +27,9 @@ var Parser = (function() {
         }
     };
     
+    /**
+     * @todo use a Token class with these methods
+     */
     var isOperator = function(token) {
         return (token[0] == '>');
     };
