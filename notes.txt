@@ -1,0 +1,11 @@
+Valid scripts
+
+http://entity.net/thing >> http://service.net/ (GET first uri and POST the respone to second uri)
+http://entity.net/thing >> http://service.net/ >> http://filter.net/ (GET first uri and POST the respone to second uri POST that response to third uri)
+
+<< indicates make a GET request
+>> indicates make a POST request with the body of the previous response (requires a prev request)
+>+ indicates make a PUT request with the body of the previous response (requires a prev request)
+>- indicates make a DELETE request
+
+Can we support ">> http://service.com" - make a POST with no data/body?
