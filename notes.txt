@@ -3,9 +3,17 @@ Valid scripts
 http://entity.net/thing >> http://service.net/ (GET first uri and POST the respone to second uri)
 http://entity.net/thing >> http://service.net/ >> http://filter.net/ (GET first uri and POST the respone to second uri POST that response to third uri)
 
-<< indicates make a GET request
+<< indicates make a GET request or just use the raw uri as a GET uri command?
 >> indicates make a POST request with the body of the previous response (requires a prev request)
 >+ indicates make a PUT request with the body of the previous response (requires a prev request)
 >- indicates make a DELETE request
 
 Can we support ">> http://service.com" - make a POST with no data/body?
+
+Implement / to mean split the response body (expect a json array)
+
+http://entity.net/thing >> http://dom.net/?f=//a/@href />> http://scrapper.net
+
+GET the first uri and POST its response to dom.net split the response from this and POST each item to scrapper.net
+
+If a service returns an array of uris can I get each one in the script and do something with its contents?
