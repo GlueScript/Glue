@@ -10,22 +10,21 @@ var request = require('request'),
  * Use a module not a class to do this.
  */
 
-function Exe(parser) {
+function Exe(parser, response) {
     this.parser = parser;
+    this.response = response;
 };
 
 /**
  * Start running the commands from the script
  */
 Exe.prototype.run = function() {
-    //this.input = '';
     this.runNext({}, '');
 };
 
 Exe.prototype.runNext = function(headers, body) {
     console.log('runNext');
-    // send this.input to next command
-    // get first command
+    // get next command
     var command = this.parser.next();
     
     if (command) {
@@ -62,13 +61,15 @@ Exe.prototype.makeRequest = function(command, hdrs, body) {
             // end the script here and respond
             exe.end('Failure: ' + error);
         }
-
     });
 };
 
 Exe.prototype.end = function(result) {
     console.log('End');
     console.log(result);
+    this.response && this.response.json(
+        {result: result}
+    );
 };
 
 module.exports = Exe;

@@ -1,4 +1,6 @@
-var express = require('express');
+var express = require('express'),
+    Parser = require('./lib/parser'),
+    Exe = require('./lib/exe');
 
 module.exports = (function() {
     'use strict';
@@ -13,7 +15,10 @@ module.exports = (function() {
 
     routes.post('/', function(req, res) {
         // accept a script in the body of the request
-        var body = req.body;
+        var parser = new Parser(req.body);
+        var exe = new Exe(parser, res);
+        // pass response to Exe to write to
+        exe.run();
     });
 
     return routes;
