@@ -11,7 +11,8 @@
   "dependencies": {
     "express": "~4.10.4",
     "body-parser": "~1.9.3",
-    "winston": "~0.8.3"
+    "winston": "~0.8.3",
+    "request": "~2.49.0"
   },
   "devDependencies": {
     "should": "~4.3.0",
