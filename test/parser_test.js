@@ -11,7 +11,7 @@ describe('Parser', function() {
             
             var command = parser.next();
             assert.equal('GET', command.method);
-            assert.equal('uri', command.endpoint);
+            assert.equal('uri', command.uri);
         });
 
         it('should return all commands when they exist', function() {
@@ -20,11 +20,11 @@ describe('Parser', function() {
 
             var command = parser.next();
             assert.equal('GET', command.method);
-            assert.equal('uri', command.endpoint);
+            assert.equal('uri', command.uri);
 
             var command = parser.next();
             assert.equal('POST', command.method);
-            assert.equal('service', command.endpoint);
+            assert.equal('service', command.uri);
         });
     });
 });

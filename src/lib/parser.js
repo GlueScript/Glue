@@ -9,9 +9,9 @@ function Parser(string) {
 };
 
 /**
- * Return a command object with a method and endpoint property
+ * Return a command object with a method and uri property
  * Throw exception is script is invalid
- * Should be 'operator endpoint' or just 'endpoint' which means GET 'endpoint'
+ * Should be 'operator uri' or just 'uri' which means GET 'uri'
  */
 Parser.prototype.next = function() {
     if (this.tokenizer.hasMore()){
@@ -21,10 +21,10 @@ Parser.prototype.next = function() {
                 /**
                 * @todo handle scripts where two operators appear adjacent
                 */
-                return {method: token.getMethod(), endpoint: this.tokenizer.next().getValue()};
+                return {method: token.getMethod(), uri: this.tokenizer.next().getValue()};
             }
         } else {
-            return {method: 'GET', endpoint: token.getValue()};
+            return {method: 'GET', uri: token.getValue()};
         }
     }
 };
