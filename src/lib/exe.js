@@ -1,4 +1,4 @@
-var http = require('http'),
+var request = require('request'),
     url = require('url');
 
 /**
@@ -18,57 +18,57 @@ function Exe(parser) {
  * Start running the commands from the script
  */
 Exe.prototype.run = function() {
-    this.input = '';
+    //this.input = '';
+    this.runNext({}, '');
+};
 
+Exe.prototype.runNext = function(headers, body) {
+    console.log('runNext');
+    // send this.input to next command
     // get first command
     var command = this.parser.next();
     
     if (command) {
-    // fire off async request
-        this.makeRequest(command);
+        // fire off async request
+        this.makeRequest(command, headers, body);
     } else {
-        this.end();
+        this.end(body);
     }
 };
 
-var runNext = function() {
-    // send this.input to next command
-    //
-};
+Exe.prototype.makeRequest = function(command, hdrs, body) {
+    var exe = this;
+    console.log('Making request to : ' + command.endpoint);
+    
+    var headers = {};
+    headers['content-type'] = hdrs['content-type'] || '';
+   
+    // use command.method and body when making requests
+    var options = {
+        method: command.method,
+        uri: command.endpoint,
+        body: body,
+        headers: headers
+     };
 
-var update = function(response) {
-    console.log('Status: '+ response.statusCode);
-    console.log('Headers: '+ JSON.stringify(response.headers));
+    //console.log(options);
+    request(options, function(error, response, body) {
+        if (!error && response.statusCode == 200){
+            console.log('Success');
+            //console.log(response.headers);
+            // push the response headers and body into the next command before requesting it?
+            exe.runNext(response.headers, body);
+        } else {
+            // end the script here and respond
+            exe.end('Failure: ' + error);
+        }
 
-    // capture response headers too 
-    response.on('data', function(chunk) { 
-        this.input += chunk;
-        console.log('data');
     });
-
-    response.on('end', function() {
-        // run next command
-        runNext();
-        console.log('end');
-    });
 };
 
-Exe.prototype.update = update;
-
-Exe.prototype.makeRequest = function(command) {
-    // split options.endpoint into host and path
-    var u = url.parse(command.endpoint);
-    // create options object
-    var options = {host: u.hostname, port: u.port, path: u.path, method: command.method};
-    var req = http.request(options, update);
-    console.log(req);
-    req.end();
-};
-
-Exe.prototype.runNext = runNext;
-
-Exe.prototype.end = function() {
-
+Exe.prototype.end = function(result) {
+    console.log('End');
+    console.log(result);
 };
 
 module.exports = Exe;
