@@ -37,7 +37,7 @@ Exe.prototype.runNext = function(headers, body) {
 
 Exe.prototype.makeRequest = function(command, hdrs, body) {
     var exe = this;
-    console.log('Making request to : ' + command.endpoint);
+    console.log('Making request to : ' + command.uri);
     
     var headers = {};
     headers['content-type'] = hdrs['content-type'] || '';
@@ -45,7 +45,7 @@ Exe.prototype.makeRequest = function(command, hdrs, body) {
     // use command.method and body when making requests
     var options = {
         method: command.method,
-        uri: command.endpoint,
+        uri: command.uri,
         body: body,
         headers: headers
      };
