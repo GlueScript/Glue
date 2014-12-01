@@ -4,7 +4,8 @@ var Parser = require('../src/lib/parser'),
 
 describe('Parser', function() {
     describe('next', function() {
-        it('should return a command when one exists', function(){
+
+        it('should return a command when one exists', function() {
             var script = 'uri';
             var parser = new Parser(script);
             
@@ -12,7 +13,8 @@ describe('Parser', function() {
             assert.equal('GET', command.method);
             assert.equal('uri', command.endpoint);
         });
-        it('should return all commands when they exist', function(){
+
+        it('should return all commands when they exist', function() {
             var script = 'uri >> service';
             var parser = new Parser(script);
 
