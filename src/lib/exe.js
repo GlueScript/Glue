@@ -1,5 +1,4 @@
-var request = require('request'),
-    url = require('url');
+var request = require('request');
 
 /**
  * Executes an array of Command objects
@@ -69,7 +68,7 @@ Exe.prototype.makeRequest = function(command, hdrs, body) {
 Exe.prototype.end = function(result) {
     console.log('End');
     // ought to check result content type before parsing as JSON
-    this.callback && this.callback(JSON.parse(result));
+    this.callback && this.callback(result);
 };
 
 module.exports = Exe;

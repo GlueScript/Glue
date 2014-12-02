@@ -1,17 +1,26 @@
 var Exe = require('../lib/exe'),
-    //mockman = require('../src/node_modules/mockman/lib/mockman'),
     mockman = require('mockman'),
     assert = require('assert');
 
 describe('Exe', function() {
     describe('run', function() {
-        it('should call callback when complete', function() {
-            var script = 'http://server.net/ >> service';
-            var mock = mockman.instance('../src/lib/parser');
-            var exe = new Exe(mock.getMock(), function(result){
-               console.log(result); 
-            });
+        it('should call parser.next() once if no commands exist', function() {
+            var mock_builder = mockman.instance('../lib/parser').shouldReceive('next').once().willReturn(null);
+            var exe = new Exe(mock_builder.getMock()(), function(result){} );
             exe.run();
+
+            mockman.close();
+        });
+
+        it('should call callback on end', function() {
+            var mock_builder = mockman.instance('../lib/parser').shouldReceive('next').once().willReturn(null);
+            
+            // set up a mock that expects to be called once the script is complete and pass inside the callback function
+            var mock_response = mockman.instance('response').shouldReceive('json').once().getMock()();
+            var exe = new Exe(mock_builder.getMock()(), function(result) { mock_response.json(result); } );
+            exe.run();
+
+            mockman.close();
         });
     });
 });
