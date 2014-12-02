@@ -6,6 +6,10 @@ var request = require('request'),
  * Passes the response from each command into the next command
  */
 
+/**
+ * pass a callback function to use when the script is ended
+ * rather than a response object
+*/
 function Exe(parser, response) {
     this.parser = parser;
     this.response = response;
@@ -13,6 +17,8 @@ function Exe(parser, response) {
 
 /**
  * Start running the commands from the script
+ * pass a callback function to run() to use when the script is ended
+ * rather than to the constructor?
  */
 Exe.prototype.run = function() {
     this.runNext({}, '');
