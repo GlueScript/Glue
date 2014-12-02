@@ -1,7 +1,7 @@
 Valid scripts
 
-http://entity.net/thing >> http://service.net/ (GET first uri and POST the respone to second uri)
-http://entity.net/thing >> http://service.net/ >> http://filter.net/ (GET first uri and POST the respone to second uri POST that response to third uri)
+http://entity.net/thing >> http://service.net/ (GET first uri and POST the response to second uri)
+http://entity.net/thing >> http://service.net/ >> http://filter.net/ (GET first uri and POST the response to second uri POST that response to third uri)
 
 << indicates make a GET request or just use the raw uri as a GET uri command?
 >> indicates make a POST request with the body of the previous response (requires a prev request)
