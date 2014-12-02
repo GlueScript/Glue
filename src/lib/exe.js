@@ -4,6 +4,9 @@ var request = require('request'),
 /**
  * Executes an array of Command objects
  * Passes the response from each command into the next command
+ *
+ * @todo update command objects to add body and request headers for use later 
+ * rather than pass around multiple connected function params
  */
 
 /**
@@ -17,8 +20,6 @@ function Exe(parser, callback) {
 
 /**
  * Start running the commands from the script
- * pass a callback function to run() to use when the script is ended
- * rather than to the constructor?
  */
 Exe.prototype.run = function() {
     this.runNext({}, '');
@@ -52,7 +53,6 @@ Exe.prototype.makeRequest = function(command, hdrs, body) {
         headers: headers
      };
 
-    //console.log(options);
     request(options, function(error, response, body) {
         if (!error && response.statusCode == 200){
             console.log('Success');
