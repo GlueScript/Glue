@@ -1,4 +1,4 @@
-var Token = require('../src/lib/token'),
+var Token = require('../lib/token'),
     assert = require('assert');
 
 

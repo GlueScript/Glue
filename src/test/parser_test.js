@@ -1,4 +1,4 @@
-var Parser = require('../src/lib/parser'),
+var Parser = require('../lib/parser'),
     assert = require('assert');
 
 
