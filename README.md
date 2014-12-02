@@ -1,5 +1,5 @@
 Glue
 ====
 
-Scripting for services
+Sticky scripting for services
 
