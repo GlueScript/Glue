@@ -4,10 +4,6 @@ var request = require('request'),
 /**
  * Executes an array of Command objects
  * Passes the response from each command into the next command
- * Needs to make async requests and have the callback access the original Parser instance
- * to continue the execution of the script.
- *
- * Use a module not a class to do this.
  */
 
 function Exe(parser, response) {
