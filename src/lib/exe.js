@@ -7,12 +7,12 @@ var request = require('request'),
  */
 
 /**
- * pass a callback function to use when the script is ended
- * rather than a response object
+ * parser provides commands in order
+ * callback used when the commands have completed
 */
-function Exe(parser, response) {
+function Exe(parser, callback) {
     this.parser = parser;
-    this.response = response;
+    this.callback = callback;
 };
 
 /**
@@ -68,10 +68,8 @@ Exe.prototype.makeRequest = function(command, hdrs, body) {
 
 Exe.prototype.end = function(result) {
     console.log('End');
-    console.log(result);
-    this.response && this.response.json(
-        {result: result}
-    );
+    // ought to check result content type before parsing as JSON
+    this.callback && this.callback(JSON.parse(result));
 };
 
 module.exports = Exe;
