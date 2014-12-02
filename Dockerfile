@@ -1,9 +1,6 @@
 FROM ubuntu:latest
 MAINTAINER Tim Rodger
 
-# Expose the port
-EXPOSE 8781
-
 # Install dependencies
 RUN apt-get update -qq && \
     apt-get -y install \
@@ -20,5 +17,7 @@ COPY src/ /home/app/
 WORKDIR /home/app
 
 RUN npm install
+
+EXPOSE 8781
 
 CMD ["nodejs", "/home/app/index.js"]
