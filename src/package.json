@@ -5,7 +5,7 @@
   "main": "index.js",
   "respository": "git@github.com:timothy-r/Glue.git",
   "scripts": {
-    "test": "mocha ../test"
+    "test": "node_modules/.bin/mocha --recursive test"
   },
   "author": "Tim Rodger tim.rodger@gmail.com",
   "dependencies": {
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "should": "~4.3.0",
-    "mocha": "~2.0.1"
+    "mocha": "~2.0.1",
+    "mockman": "*"
   }
 }
