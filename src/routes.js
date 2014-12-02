@@ -16,8 +16,13 @@ module.exports = (function() {
     routes.post('/', function(req, res) {
         // accept a script in the body of the request
         var parser = new Parser(req.body);
-        var exe = new Exe(parser, res);
-        // pass response to Exe to write to
+
+        // pass callback to write to response.json()
+        var exe = new Exe(parser, function(result) {
+            res.json(
+                {result: result}
+            );
+        });
         exe.run();
     });
 
