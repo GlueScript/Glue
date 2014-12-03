@@ -3,13 +3,10 @@ var request = require('request');
 /**
  * Executes an array of Command objects
  * Passes the response from each command into the next command
- *
- * @todo update command objects to add body and request headers for use later 
- * rather than pass around multiple connected function params
  */
 
 /**
- * parser provides commands in order
+ * parser provides commands in order to be executed
  * callback used when the commands have completed
 */
 function Exe(parser, callback) {
@@ -24,6 +21,10 @@ Exe.prototype.start = function() {
     this.runNext({}, '');
 };
 
+/**
+ * Actually we just want the content-type / mime-type of the body string
+ * not all the previous response headers. Maybe use a composite type of string and mime-type
+ */
 Exe.prototype.runNext = function(headers, body) {
     var exe = this;
     var command = this.parser.next();
@@ -31,12 +32,12 @@ Exe.prototype.runNext = function(headers, body) {
     if (command) {
         console.log('runNext(): making request to : ' + command.uri);
         command['headers'] = headers;
+        // if command['split'] then split body assuming a json array and make a request per item
         command['body'] = body;
         // fire off async request
         request(command, function(error, response, body) {
             if (!error && response.statusCode == 200){
                 console.log('Success');
-                // push the response headers and body into the next command before requesting it?
                 exe.runNext({'content-type' : response.headers['content-type']}, body);
             } else {
                 // end the script here and respond
