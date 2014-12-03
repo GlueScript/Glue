@@ -7,7 +7,7 @@ describe('Exe', function() {
         it('should call parser.next() once if no commands exist', function() {
             var mock_builder = mockman.instance('../lib/parser').shouldReceive('next').once().willReturn(null);
             var exe = new Exe(mock_builder.getMock()(), function(result){} );
-            exe.run();
+            exe.start();
 
             mockman.close();
         });
@@ -18,7 +18,7 @@ describe('Exe', function() {
             // set up a mock that expects to be called once the script is complete and pass inside the callback function
             var mock_response = mockman.instance('response').shouldReceive('json').once().getMock()();
             var exe = new Exe(mock_builder.getMock()(), function(result) { mock_response.json(result); } );
-            exe.run();
+            exe.start();
 
             mockman.close();
         });

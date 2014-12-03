@@ -23,7 +23,7 @@ module.exports = (function() {
                 {result: result}
             );
         });
-        exe.run();
+        exe.start();
     });
 
     return routes;
