@@ -6,9 +6,8 @@ var app = require('express')(),
     bodyParser = require('body-parser'),
     routes = require('./routes');
 
+// only expect text/* cotent types, in fact text/plain
 app.use(bodyParser.text({type : 'text/*', limit: '1024kb'}));
-app.use(bodyParser.text({type : 'application/xml'}));
-app.use(bodyParser.json({type : 'application/json'}));
 
 exports.start = function(port){
     app.use('/', routes);
