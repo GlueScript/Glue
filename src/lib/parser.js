@@ -16,15 +16,15 @@ function Parser(string) {
 Parser.prototype.next = function() {
     if (this.tokenizer.hasMore()){
         var token = this.tokenizer.next();
-        if (token.isOperator()){
+        if (token.isMethod()){
             if (this.tokenizer.hasMore()){
                 /**
-                * @todo handle scripts where two operators appear adjacent
+                * @todo handle scripts where two methods appear adjacent
                 */
                 return {method: token.getMethod(), uri: this.tokenizer.next().getValue()};
             }
         } else {
-            // ought to check that token is not an operator, otherwise invalid script
+            // ought to check that token is not a method or operator, if so then it's an invalid script
             // for v1 at least
             return {method: 'GET', uri: token.getValue()};
         }

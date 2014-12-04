@@ -1,7 +1,8 @@
 /**
  * Token class encapsulates a token with these public method
  *
- * isOperator - test if the token is a script operator
+ * isOperator - test if the token is a script operator, eg. / or + (split and join)
+ * isMethod - test if the token is a script method, eg. POST
  * getMethod - convert script operators into a request method
  * getValue - return the value of the token
  */
@@ -11,6 +12,10 @@ function Token(value) {
 }
 
 Token.prototype.isOperator = function() {
+    return (this.value[0] == '/');
+};
+
+Token.prototype.isMethod = function() {
     return (this.value[0] == '>');
 };
 
