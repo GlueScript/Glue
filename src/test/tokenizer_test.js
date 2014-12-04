@@ -32,14 +32,14 @@ describe('Tokenizer', function() {
             var script = 'uri >> service';
             var tokenizer = new Tokenizer(script);
             assert.equal('uri', tokenizer.next().getValue());
-            assert.equal('>>', tokenizer.next().getValue());
+            assert.equal('POST', tokenizer.next().getValue());
             assert.equal('service', tokenizer.next().getValue());
         });
         it('should ignore all whitespace', function(){
             var script = 'uri   >>    service';
             var tokenizer = new Tokenizer(script);
             assert.equal('uri', tokenizer.next().getValue());
-            assert.equal('>>', tokenizer.next().getValue());
+            assert.equal('POST', tokenizer.next().getValue());
             assert.equal('service', tokenizer.next().getValue());
         });
         it('should return undefined when no tokens exist', function(){

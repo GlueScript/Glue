@@ -4,8 +4,6 @@
  * @todo add isUri method?
  * isOperator - test if the token is a script operator, eg. / or + (split and join)
  * isMethod - test if the token is a script method, eg. POST
- * @todo use getValue for all types
- * getMethod - convert script operators into a request method
  * getValue - return the value of the token
  */
 
@@ -29,17 +27,18 @@ Token.prototype.isMethod = function() {
     return (this.value[0] == '>');
 };
 
-/**
- * @obsolete - use getValue to retrieve all token strings
- */
-Token.prototype.getMethod = function() {
-    if ('>>' == this.value){
-        return 'POST';
-    }
-};
-
 Token.prototype.getValue = function() {
-    return this.value;
+    if (this.isMethod()){
+        if ('>>' == this.value){
+             return 'POST';
+       }
+    } else if (this.isOperator()){
+        if ('/' == this.value){
+            return 'split';
+        }
+    } else {
+        return this.value;
+    }
 };
 
 module.exports = Token;

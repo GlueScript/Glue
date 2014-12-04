@@ -36,25 +36,20 @@ describe('Token', function() {
             var token = new Token(value);
             assert.equal(value, token.getValue());
         });
-    });
-    describe('getMethod', function() {
-        it('should return POST for >>', function(){
+        it('should return token value for method', function(){
             var value = '>>';
             var token = new Token(value);
-            assert.equal('POST', token.getMethod());
-            assert(!token.isOperator());
+            assert.equal('POST', token.getValue());
         });
-        it('should return undefined if not an operator', function(){
-            var value = 'http://service.com/';
-            var token = new Token(value);
-            assert.equal(undefined, token.getMethod());
-            assert(!token.isOperator());
-        });
-        it('should return undefined if not a recognised operator', function(){
+        it('should return null value for unrecognised method', function(){
             var value = '>+';
             var token = new Token(value);
-            assert.equal(undefined, token.getMethod());
-            assert(!token.isOperator());
+            assert.equal(null, token.getValue());
+        });
+        it('should return split for /', function(){
+            var value = '/';
+            var token = new Token(value);
+            assert.equal('split', token.getValue());
         });
     });
     describe('isMethod', function() {

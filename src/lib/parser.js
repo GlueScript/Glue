@@ -21,7 +21,7 @@ Parser.prototype.next = function() {
                 /**
                 * @todo handle scripts where two methods appear adjacent
                 */
-                return {method: token.getMethod(), uri: this.tokenizer.next().getValue()};
+                return {method: token.getValue(), uri: this.tokenizer.next().getValue()};
             }
         } else {
             // ought to check that token is not a method or operator, if so then it's an invalid script
