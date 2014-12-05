@@ -19,7 +19,7 @@ var logger = new winston.Logger({
 });
 
 // use env.PORT if set
-var PORT = process.env.PORT || 8781;
+var PORT = process.env.PORT || 80;
 server.start(PORT);
 
 logger.log('info', 'Running on http://localhost:' + PORT);
