@@ -1,9 +1,10 @@
 language: node_js
 
-before_script: 
-    - npm install
+install:
+    - cd src; npm install
 
-script: npm test
+script:
+    - cd src; npm test
 
 branches:
     only:
