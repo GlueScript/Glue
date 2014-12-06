@@ -7,9 +7,6 @@ RUN apt-get update -qq && \
     nodejs \
     npm
 
-# Make the directories
-RUN mkdir /home/app 
-
 # Move files into place
 COPY src/ /home/app/
 
