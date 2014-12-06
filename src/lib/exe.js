@@ -18,6 +18,7 @@ function Exe(parser, callback) {
  * Start running the commands from the script
  */
 Exe.prototype.start = function() {
+    console.log('Start');
     this.runNext({}, '');
 };
 
