@@ -12,6 +12,7 @@
     "express": "~4.10.4",
     "body-parser": "~1.9.3",
     "winston": "~0.8.3",
+    "xmldom": "~0.1.19",
     "request": "~2.49.0"
   },
   "devDependencies": {
