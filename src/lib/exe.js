@@ -30,7 +30,7 @@ Exe.prototype.runNext = function(headers, body) {
     var command = this.parser.next();
 
     if (command) {
-        console.log('runNext(): making request to : ' + command.uri);
+        console.log('runNext(): making request to : ' + command.uri + ' : ' + JSON.stringify(headers));
         command['headers'] = headers;
         // if command['split'] then split body assuming a json array and make a request per item
         command['body'] = body;
