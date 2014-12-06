@@ -2,7 +2,7 @@ var Payload = require('../lib/payload'),
     assert = require('assert');
 
 describe('Payload', function() {
-    describe('type', function() {
+    describe('construct', function() {
         it('should convert array to json', function(){
             var value = ['a','b','c'];
             var payload = new Payload(value);
