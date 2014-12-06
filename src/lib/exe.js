@@ -52,7 +52,6 @@ Exe.prototype.multiRequest = function(command, headers, body) {
     exe.body_count = bodies.length;
 
     //console.log(bodies);
-    console.log('runNext(): making request to : ' + command.uri + ' ' + exe.body_count);
     console.log('runNext(): making request to : ' + command.uri + ' : ' + JSON.stringify(headers) + ' ' + exe.body_count);
 
     // generate a request per body item
