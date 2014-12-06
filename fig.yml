@@ -1,0 +1,23 @@
+dom:
+  image: timrodger/dom
+  ports:
+    - "41991:80"
+
+prepend:
+  image: timrodger/prepend
+  ports:
+    - "41992:80"
+
+md:
+  image: timrodger/md
+  ports:
+    - "41993:80"
+
+web:
+  image: timrodger/glue
+  ports:
+    - "41990:80"
+  links:
+    - dom
+    - prepend
+    - md

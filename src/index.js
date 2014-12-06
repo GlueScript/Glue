@@ -22,4 +22,4 @@ var logger = new winston.Logger({
 var PORT = process.env.PORT || 80;
 server.start(PORT);
 
-logger.log('info', 'Running on http://localhost:' + PORT);
+logger.log('info', 'Running glue service on http://localhost:' + PORT);
