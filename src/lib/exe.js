@@ -33,7 +33,12 @@ Exe.prototype.runNext = function(headers, body) {
     if (command) {
         if (command['split']){
             // split body, expect json array
-            // call this.runNext(headers, bodies);
+            var json_body = JSON.parse(body);
+            if ((json_body instanceof Array)){
+                this.runNext(headers, json_body);
+            } else {
+                this.runNext(headers, body);
+            }
         } else {
             this.multiRequest(command, headers, body);
         }
