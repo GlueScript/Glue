@@ -52,5 +52,40 @@ describe('Payload', function() {
             assert.equal(value, payload.content);
         });
     });
+
+    describe('split', function() {
+
+        it('should return array with one item when not json array', function(){
+            var value = 'a plain text string';
+            var payload = new Payload(value);
+            var payloads = payload.split();
+            assert.equal(1, payloads.length);
+            assert(payloads[0] instanceof Payload);
+            assert.equal(value, payloads[0].content);
+        });
+
+        it('should return array with one item when a json object', function(){
+            var value = JSON.stringify({a: 'AAA'});
+            var payload = new Payload(value);
+            var payloads = payload.split();
+            assert.equal(1, payloads.length);
+            assert(payloads[0] instanceof Payload);
+            assert.equal(value, payloads[0].content);
+        });
+
+        it('should return array with many items when a json array', function(){
+            var value = JSON.stringify(['a', 'b', 'c']);
+            var payload = new Payload(value);
+            var payloads = payload.split();
+            assert.equal(3, payloads.length);
+            assert(payloads[0] instanceof Payload);
+            assert.equal('a', payloads[0].content);
+            assert(payloads[1] instanceof Payload);
+            assert.equal('b', payloads[1].content);
+            assert(payloads[2] instanceof Payload);
+            assert.equal('c', payloads[2].content);
+        });
+
+    });
 });
 

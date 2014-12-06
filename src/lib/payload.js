@@ -19,6 +19,23 @@ function Payload(content, type) {
     }
 }
 
+Payload.prototype.split = function() {
+    var items = [];
+    if (isJSON(this.content)){
+        var json = JSON.parse(this.content);
+        if (json instanceof Array) {
+            for(var item in json) {
+                items.push(new Payload(json[item]));
+            }
+        } else {
+            items.push(new Payload(this.content));
+        }
+    } else {
+        items.push(new Payload(this.content));
+    }
+    return items;
+};
+
 function isJSON(content) {
     try {
         JSON.parse(content);
