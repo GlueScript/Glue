@@ -1,18 +1,16 @@
-var request = require('request');
+var request = require('request'),
+    Payload = require('./payload');
 
 /**
  * Executes an array of Command objects
  * Passes the response from each command into the next command
- */
-
-/**
+ *
  * parser provides commands in order to be executed
- * callback used when the commands have completed
+ * callback used when the execution of the commands is completed
 */
 function Exe(parser, callback) {
     this.parser = parser;
     this.callback = callback;
-    this.body_count = 0;
 };
 
 /**
@@ -20,69 +18,69 @@ function Exe(parser, callback) {
  */
 Exe.prototype.start = function() {
     console.log('Start');
-    this.runNext({}, '');
+    this.runNext(new Payload(''));
 };
 
 /**
  * Actually we just want the content-type / mime-type of the body string
  * not all the previous response headers. Maybe use a composite type of string and mime-type
  */
-Exe.prototype.runNext = function(headers, body) {
+Exe.prototype.runNext = function(payload) {
+
     var command = this.parser.next();
 
     if (command) {
-        if (command['split']){
+        if (command.operator == 'split'){
             // split body, expect json array
-            var json_body = JSON.parse(body);
-            if ((json_body instanceof Array)){
-                this.runNext(headers, json_body);
-            } else {
-                this.runNext(headers, body);
-            }
+            // caution - payload might be an array if split appears twice in the script...
+            this.runNext(payload.split());
         } else {
-            this.multiRequest(command, headers, body);
+            if (payload instanceof Array){
+                this.request_count = payloads.length;
+                // generate a request per item
+                for(var key in payloads) {
+                    this.request(command, payloads[key];
+                }
+            } else {
+                this.request_count = 1;
+                this.request(command, payload);
+            }
         }
     } else {
-        this.end(body);
+        this.end(join(payload));
     }
 };
 
-Exe.prototype.multiRequest = function(command, headers, body) {
+Exe.prototype.request(command, payload) {
     var exe = this;
-    // body might be a string or an array
-    var bodies = body;
-    if (!(body instanceof Array)){
-        var bodies = [body];
-    }
+    command['body'] = payload.content;
+    command['headers'] = [];
+    command['headers']['content-type'] = payload.type;
 
-    exe.body_count = bodies.length;
-
-    //console.log(bodies);
-    console.log('runNext(): making request to : ' + command.uri + ' : ' + JSON.stringify(headers) + ' ' + exe.body_count);
-
-    // generate a request per body item
-    for(var key in bodies) { 
-        command['headers'] = headers;
-        command['body'] = bodies[key];
-        request(command, function(error, response, response_body) {
-            if (!error && response.statusCode == 200){
-                console.log('Success');
-                // call receiveResponse 
-                exe.runNext({'content-type' : response.headers['content-type']}, response_body);
-            } else {
-                // end the script here and respond
-                exe.end('Failure: ' + error);
-            }
-        });
-    }
+    console.log('request(): making request to : ' + command.uri + ' : ' + JSON.stringify(command[headers]) + ' ' + exe.request_count);
+    request(command, function(error, response, response_body) {
+        if (!error && response.statusCode == 200){
+            console.log('Success');
+            // call receiveResponse 
+            exe.receiveResponse(new Payload(response_body));
+        } else {
+            // end the script here and respond
+            exe.end('Failure: ' + error);
+        }
+    });
 };
 
 /*
  * Callback from each request
 */
-Exe.prototype.receiveResponse = function(error, response, body) {
-    this.incoming_bodies.push({headers: headers, body: body});
-    // if incoming_bodies equals body_count then call runNext
+Exe.prototype.receiveResponse = function(payload) {
+    this.incoming_payloads.push(payload);
+    // if incoming_payloads equals request_count then call runNext
+    if (this.incoming_payloads.length == this.request_count){
+        this.request_count = 0;
+        // join incoming_payloads and run next command
+        this.runNext(join(this.incoming_payloads));
+    }
 }
 
 Exe.prototype.end = function(result) {
@@ -90,5 +88,20 @@ Exe.prototype.end = function(result) {
     // return the result as a string
     this.callback && this.callback(result);
 };
+
+/**
+ * Should / can this be on Payload class?
+ */
+function join(payload) {
+    if (payload instanceof Array){
+        var all = [];
+        for(var item in payload){
+            all.push(payload.content);
+        }
+        return JSON.stringify(all);
+    } else {
+        return payload;
+    }
+}
 
 module.exports = Exe;
