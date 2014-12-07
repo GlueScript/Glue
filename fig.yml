@@ -13,6 +13,16 @@ md:
   ports:
     - "41993:80"
 
+report:
+  image: timrodger/report
+  ports:
+    - "41994:80"
+
+jsonfilter:
+  image: timrodger/json-filter
+  ports:
+    - "41995:80"
+
 web:
   image: timrodger/glue
   ports:
@@ -21,3 +31,4 @@ web:
     - dom
     - prepend
     - md
+    - report
