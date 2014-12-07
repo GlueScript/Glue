@@ -27,7 +27,7 @@ Exe.prototype.start = function() {
  */
 Exe.prototype.runNext = function(payload) {
 
-    this.incoming_payloads = [];
+    this.incoming = [];
     var command = this.parser.next();
 
     if (command) {
@@ -57,7 +57,7 @@ Exe.prototype.request = function(command, payload) {
     command['body'] = payload.content;
     command['headers'] = {'content-type': payload.type};
 
-    console.log('request(): making request to : ' + command.uri + ' : ' + JSON.stringify(command) + ' ' + exe.request_count);
+    console.log('request(): making request to : ' + command.uri + ' : ' + payload.type + ' ' + exe.request_count);
     request(command, function(error, response, response_body) {
         if (!error && response.statusCode == 200){
             console.log('Success');
@@ -74,15 +74,15 @@ Exe.prototype.request = function(command, payload) {
  * Callback from each request
 */
 Exe.prototype.receiveResponse = function(payload) {
-    this.incoming_payloads.push(payload);
-    // if incoming_payloads equals request_count then call runNext
-    if (this.incoming_payloads.length == this.request_count){
+    this.incoming.push(payload);
+    // if incoming equals request_count then call runNext
+    if (this.incoming.length == this.request_count){
         this.request_count = 0;
-        if (this.incoming_payloads.length > 1) {
-            // join incoming_payloads and run next command
-            this.runNext(join(this.incoming_payloads));
+        if (this.incoming.length > 1) {
+            // join incoming and run next command
+            this.runNext(join(this.incoming));
         } else {
-            this.runNext(this.incoming_payloads[0]);
+            this.runNext(this.incoming[0]);
         }
     }
 }
@@ -100,7 +100,7 @@ function join(payload) {
     if (payload instanceof Array){
         var all = [];
         for(var item in payload){
-            all.push(payload.content);
+            all.push(payload[item].content);
         }
         return JSON.stringify(all);
     } else {
