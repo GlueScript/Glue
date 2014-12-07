@@ -3,18 +3,30 @@ var Payload = require('../lib/payload'),
 
 describe('Payload', function() {
     describe('construct', function() {
-        it('should convert array to json', function(){
+        it('should convert array to json string', function(){
             var value = ['a','b','c'];
             var payload = new Payload(value);
             assert.equal('application/json', payload.type);
             assert.equal(JSON.stringify(value), payload.content);
         });
 
-        it('should convert object to json', function(){
+        it('should convert object to json string', function(){
             var value = {a : 'A', b : 'B', c: 'C'};
             var payload = new Payload(value);
             assert.equal('application/json', payload.type);
             assert.equal(JSON.stringify(value), payload.content);
+        });
+
+        it('should convert array of JSON strings to json string', function(){
+            var value = {a : 'A', b : 'B', c: 'C'};
+            var payload = new Payload([JSON.stringify(value)]);
+            assert.equal('application/json', payload.type);
+            var result = JSON.parse(payload.content);
+            assert(result instanceof Array);
+            assert(result[0] instanceof Object);
+            assert.equal('A', result[0].a);
+            assert.equal('B', result[0].b);
+            assert.equal('C', result[0].c);
         });
 
         it('should treat a json string as json', function(){
@@ -54,7 +66,6 @@ describe('Payload', function() {
     });
 
     describe('split', function() {
-
         it('should return array with one item when not json array', function(){
             var value = 'a plain text string';
             var payload = new Payload(value);
@@ -85,7 +96,6 @@ describe('Payload', function() {
             assert(payloads[2] instanceof Payload);
             assert.equal('c', payloads[2].content);
         });
-
     });
 });
 

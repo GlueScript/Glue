@@ -6,7 +6,19 @@ var Parser = require('xmldom').DOMParser;
  * Converts Object and Array content to JSON strings
 */
 function Payload(content, type) {
-    if (content instanceof Object) {
+    if (content instanceof Array) {
+        var real = [];
+        for (var item in content) {
+            if (isJSON(content[item])){
+                real.push(JSON.parse(content[item]));
+            } else {
+                real.push(content[item]);
+            }
+        }
+        this.content = JSON.stringify(real);
+        this.type = 'application/json';
+        // attempt to convert each item to a 
+    } else if (content instanceof Object) {
         this.content = JSON.stringify(content);
         this.type = 'application/json';
     } else {
