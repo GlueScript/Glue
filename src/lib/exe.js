@@ -100,9 +100,11 @@ function join(payload) {
     if (payload instanceof Array){
         var all = [];
         for(var item in payload){
+            // if item is a JSON string then convert to an Array or Object here
+            // so that when we stringify Payload it can be deserialized by the next service
             all.push(payload[item].content);
         }
-        return JSON.stringify(all);
+        return new Payload(all);
     } else {
         return payload;
     }
