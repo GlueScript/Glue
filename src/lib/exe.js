@@ -27,6 +27,7 @@ Exe.prototype.start = function() {
  */
 Exe.prototype.runNext = function(payload) {
 
+    this.incoming_payloads = [];
     var command = this.parser.next();
 
     if (command) {
@@ -36,10 +37,10 @@ Exe.prototype.runNext = function(payload) {
             this.runNext(payload.split());
         } else {
             if (payload instanceof Array){
-                this.request_count = payloads.length;
+                this.request_count = payload.length;
                 // generate a request per item
-                for(var key in payloads) {
-                    this.request(command, payloads[key];
+                for(var key in payload) {
+                    this.request(command, payload[key]);
                 }
             } else {
                 this.request_count = 1;
@@ -51,13 +52,12 @@ Exe.prototype.runNext = function(payload) {
     }
 };
 
-Exe.prototype.request(command, payload) {
+Exe.prototype.request = function(command, payload) {
     var exe = this;
     command['body'] = payload.content;
-    command['headers'] = [];
-    command['headers']['content-type'] = payload.type;
+    command['headers'] = {'content-type': payload.type};
 
-    console.log('request(): making request to : ' + command.uri + ' : ' + JSON.stringify(command[headers]) + ' ' + exe.request_count);
+    console.log('request(): making request to : ' + command.uri + ' : ' + JSON.stringify(command) + ' ' + exe.request_count);
     request(command, function(error, response, response_body) {
         if (!error && response.statusCode == 200){
             console.log('Success');
@@ -78,8 +78,12 @@ Exe.prototype.receiveResponse = function(payload) {
     // if incoming_payloads equals request_count then call runNext
     if (this.incoming_payloads.length == this.request_count){
         this.request_count = 0;
-        // join incoming_payloads and run next command
-        this.runNext(join(this.incoming_payloads));
+        if (this.incoming_payloads.length > 1) {
+            // join incoming_payloads and run next command
+            this.runNext(join(this.incoming_payloads));
+        } else {
+            this.runNext(this.incoming_payloads[0]);
+        }
     }
 }
 
