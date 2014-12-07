@@ -4,7 +4,7 @@ install:
     - cd src; npm install
 
 script:
-    - cd src; npm test
+    - npm test
 
 branches:
     only:
