@@ -7,6 +7,10 @@ RUN apt-get update -qq && \
     nodejs \
     npm
 
+EXPOSE 80
+
+CMD ["nodejs", "/home/app/index.js"]
+
 # Move files into place
 COPY src/ /home/app/
 
@@ -14,7 +18,3 @@ COPY src/ /home/app/
 WORKDIR /home/app
 
 RUN npm install
-
-EXPOSE 80
-
-CMD ["nodejs", "/home/app/index.js"]
