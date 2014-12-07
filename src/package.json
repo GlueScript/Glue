@@ -3,7 +3,10 @@
   "version": "0.2.0",
   "description": "Provides scripting for services",
   "main": "index.js",
-  "respository": "git@github.com:timothy-r/Glue.git",
+  "repository": {
+    "url" : "git@github.com:timothy-r/Glue.git",
+    "type" : "git"
+  },
   "scripts": {
     "test": "node_modules/.bin/mocha --recursive test"
   },
