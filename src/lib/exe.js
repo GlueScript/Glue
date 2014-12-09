@@ -22,8 +22,8 @@ Exe.prototype.start = function() {
 };
 
 /**
- * Actually we just want the content-type / mime-type of the body string
- * not all the previous response headers. Maybe use a composite type of string and mime-type
+ * We just want the content-type / mime-type of the body string
+ * not all the previous response headers. 
  */
 Exe.prototype.runNext = function(payload) {
 
@@ -90,18 +90,20 @@ Exe.prototype.receiveResponse = function(payload) {
 Exe.prototype.end = function(result) {
     console.log('End');
     // return the result as a string
-    this.callback && this.callback(result);
+    this.callback(result);
 };
 
 /**
  * Should / can this be on Payload class?
  */
 function join(payload) {
+    // deal with Arrays of Payload instances
     if (payload instanceof Array){
         var all = [];
         for(var item in payload){
             // if item is a JSON string then convert to an Array or Object here
             // so that when we stringify Payload it can be deserialized by the next service
+            console.log('payload[item].content : ' + payload[item].content);
             all.push(payload[item].content);
         }
         return new Payload(all);
