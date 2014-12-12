@@ -57,7 +57,7 @@ Exe.prototype.request = function(command, payload) {
     command['body'] = payload.content;
     command['headers'] = {'content-type': payload.type};
 
-    console.log('request(): making request to : ' + command.uri + ' : ' + payload.type + ' ' + exe.request_count);
+    console.log('request() : ' + command.uri + ' : ' + payload.type + ' ' + exe.request_count);
     request(command, function(error, response, response_body) {
         if (!error && response.statusCode == 200){
             console.log('Success');
@@ -103,7 +103,7 @@ function join(payload) {
         for(var item in payload){
             // if item is a JSON string then convert to an Array or Object here
             // so that when we stringify Payload it can be deserialized by the next service
-            console.log('payload[item].content : ' + payload[item].content);
+            // console.log('payload[item].content : ' + payload[item].content);
             all.push(payload[item].content);
         }
         return new Payload(all);
