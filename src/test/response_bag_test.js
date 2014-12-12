@@ -81,6 +81,17 @@ describe('ResponseBag', function() {
             var response_bag = new ResponseBag(value);
             assert.equal(0, response_bag.responses().length);
         });
+        it('should contain all responses', function(){
+            var value = 10;
+            var response_bag = new ResponseBag(value);
+            assert.equal(0, response_bag.responses().length);
+            response_bag.push(null, 'response body');
+            assert.equal(1, response_bag.responses().length);
+
+            var response = response_bag.responses()[0];
+            assert.equal(null, response.error);
+            assert.equal('response body', response.payload);
+        });
     });
 });
 

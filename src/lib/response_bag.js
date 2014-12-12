@@ -28,7 +28,7 @@ ResponseBag.prototype.push = function(e, p) {
 };
 
 ResponseBag.prototype.errors = function() {
-    for(var res in this.contents){
+    for (var res in this.contents){
         if (this.contents[res].error){
             return true;
         }
@@ -37,7 +37,7 @@ ResponseBag.prototype.errors = function() {
 };
 
 ResponseBag.prototype.responses = function() {
-    return [];
+    return this.contents;
 };
 
 module.exports = ResponseBag;
