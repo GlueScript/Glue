@@ -3,7 +3,7 @@
  */
 function ResponseBag(size) {
     this.size = size;
-    this.responses = [];
+    this.contents = [];
 }
 
 ResponseBag.prototype.totalSize = function() {
@@ -11,20 +11,33 @@ ResponseBag.prototype.totalSize = function() {
 };
 
 ResponseBag.prototype.currentSize = function() {
-    return this.responses.length;
+    return this.contents.length;
 };
 
-ResponseBag.prototype.complete = function() {
-    return this.responses.length == this.size;
+ResponseBag.prototype.full = function() {
+    return this.contents.length == this.size;
 };
 
 ResponseBag.prototype.push = function(e, p) {
-    this.responses.push(
+    this.contents.push(
         {
             error: e,
             payload: p
         }
     );
+};
+
+ResponseBag.prototype.errors = function() {
+    for(var res in this.contents){
+        if (this.contents[res].error){
+            return true;
+        }
+    }
+    return false;
+};
+
+ResponseBag.prototype.responses = function() {
+    return [];
 };
 
 module.exports = ResponseBag;

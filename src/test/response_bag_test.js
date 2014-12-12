@@ -8,15 +8,15 @@ describe('ResponseBag', function() {
             var response_bag = new ResponseBag(value);
             assert.equal(value, response_bag.totalSize());
         });
-        it('should have a current size', function(){
+        it('should have a current size of zero', function(){
             var value = 10;
             var response_bag = new ResponseBag(value);
             assert.equal(0, response_bag.currentSize());
         });
-        it('should not be complete', function(){
+        it('should not be full', function(){
             var value = 10;
             var response_bag = new ResponseBag(value);
-            assert(!response_bag.complete());
+            assert(!response_bag.full());
         });
     });
     describe('push', function() {
@@ -24,7 +24,62 @@ describe('ResponseBag', function() {
             var value = 10;
             var response_bag = new ResponseBag(value);
             response_bag.push(null, 'response body');
-            assert(!response_bag.complete());
+            assert(!response_bag.full());
+        });
+        it('should fill a bag', function(){
+            var value = 1;
+            var response_bag = new ResponseBag(value);
+            response_bag.push(null, 'response body');
+            assert(response_bag.full());
+        });
+        it('should increase current size', function(){
+            var value = 10;
+            var response_bag = new ResponseBag(value);
+            response_bag.push(null, 'response body');
+            assert.equal(1, response_bag.currentSize());
+            response_bag.push(null, 'response body');
+            assert.equal(2, response_bag.currentSize());
+        });
+    });
+    describe('full', function() {
+        it('should be false when current is less than total', function(){
+            var value = 10;
+            var response_bag = new ResponseBag(value);
+            response_bag.push(null, 'response body');
+            assert(!response_bag.full());
+        });
+        it('should be true when current equals total', function(){
+            var value = 2;
+            var response_bag = new ResponseBag(value);
+            response_bag.push(null, 'response body');
+            response_bag.push(null, 'response body');
+            assert(response_bag.full());
+        });
+    });
+    describe('errors', function() {
+        it('should be false when bag is empty', function(){
+            var value = 10;
+            var response_bag = new ResponseBag(value);
+            assert(!response_bag.errors());
+        });
+        it('should be false when no errors exist', function(){
+            var value = 2;
+            var response_bag = new ResponseBag(value);
+            response_bag.push(null, 'response body');
+            assert(!response_bag.errors());
+        });
+        it('should be true when errors exist', function(){
+            var value = 2;
+            var response_bag = new ResponseBag(value);
+            response_bag.push('Error: request timedout', 'response body');
+            assert(response_bag.errors());
+        });
+    });
+    describe('responses', function() {
+        it('should be empty when bag is empty', function(){
+            var value = 10;
+            var response_bag = new ResponseBag(value);
+            assert.equal(0, response_bag.responses().length);
         });
     });
 });
