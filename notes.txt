@@ -16,4 +16,10 @@ http://entity.net/thing >> http://dom.net/?f=//a/@href />> http://scrapper.net
 
 GET the first uri and POST its response to dom.net split the response from this and POST each item to scrapper.net
 
-If a service returns an array of uris can I get each one in the script and do something with its contents?
+If a service returns an array of uris can I GET each one in the script and do something with its contents rather than have a service do this?
+
+
+Other example uses?? split and join / and +
+
+1) returns an array of uris POST each one to a metadata service which generates metadata for a resource and then collate the results (convert back to an array) and pipe (+>>) into a report
+http:/resource.net/?age>100&age<30000 />> http://resource.md.net/ +>> http://resource.report.net/
