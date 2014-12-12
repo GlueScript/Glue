@@ -14,7 +14,7 @@ Implement / to mean split the response body (expect a json array)
 
 http://entity.net/thing >> http://dom.net/?f=//a/@href />> http://scrapper.net
 
-GET the first uri and POST its response to dom.net split the response from this and POST each item to scrapper.net
+GET the first uri and POST its response to dom.net to extract the href attribute values of all a tags, then split the response from this and POST each item to scrapper.net. Respond with the contents of the result of the last request
 
 If a service returns an array of uris can I GET each one in the script and do something with its contents rather than have a service do this?
 
