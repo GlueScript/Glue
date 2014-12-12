@@ -1,5 +1,6 @@
 var request = require('request'),
-    Payload = require('./payload');
+    Payload = require('./payload')
+    ResponseBag = require('./response_bag');
 
 /**
  * Executes an array of Command objects
@@ -36,15 +37,13 @@ Exe.prototype.runNext = function(payload) {
             // caution - payload might be an array if split appears twice in the script...
             this.runNext(payload.split());
         } else {
-            if (payload instanceof Array){
-                this.request_count = payload.length;
-                // generate a request per item
-                for(var key in payload) {
-                    this.request(command, payload[key]);
-                }
-            } else {
-                this.request_count = 1;
-                this.request(command, payload);
+            if (!(payload instanceof Array)){
+                payload = [payload];
+            }
+            this.request_count = payload.length;
+            // generate a request per item
+            for(var key in payload) {
+                this.request(command, payload[key]);
             }
         }
     } else {
@@ -58,14 +57,17 @@ Exe.prototype.request = function(command, payload) {
     command['headers'] = {'content-type': payload.type};
 
     console.log('request() : ' + command.uri + ' : ' + payload.type + ' ' + exe.request_count);
+
     request(command, function(error, response, response_body) {
         if (!error && response.statusCode == 200){
             console.log('Success');
-            // call receiveResponse 
-            exe.receiveResponse(new Payload(response_body));
+            exe.receive(null, new Payload(response_body));
         } else {
-            // end the script here and respond
-            exe.end('Failure: ' + error);
+            // receive success and failure the same so that we complete all pending requests
+            // before calling end()
+            console.log('Error');
+            // exe.end('Failure: ' + error);
+            exe.receive(error, new Payload('Failure :' + error));
         }
     });
 };
@@ -73,7 +75,7 @@ Exe.prototype.request = function(command, payload) {
 /*
  * Callback from each request
 */
-Exe.prototype.receiveResponse = function(payload) {
+Exe.prototype.receive = function(error, payload) {
     this.incoming.push(payload);
     // if incoming equals request_count then call runNext
     if (this.incoming.length == this.request_count){
