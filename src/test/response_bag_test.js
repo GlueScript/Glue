@@ -7,7 +7,7 @@ describe('ResponseBag', function() {
         it('should have a total size', function(){
             var value = 10;
             var response_bag = new ResponseBag(value);
-            assert.equal(value, response_bag.totalSize());
+            assert.equal(value, response_bag.total());
         });
         it('should have a current size of zero', function(){
             var value = 10;
@@ -98,6 +98,7 @@ describe('ResponseBag', function() {
             var response_bag = new ResponseBag(10);
             var payload = response_bag.join();
             assert(payload instanceof Payload);
+            assert.equal(payload.content, '');
         });
         it('should return a single Payload when there is only one response', function(){
             var response_bag = new ResponseBag(10);
@@ -118,12 +119,3 @@ describe('ResponseBag', function() {
         });
     });
 });
-            var value = 10;
-            var response_bag = new ResponseBag(value);
-            assert.equal(0, response_bag.responses().length);
-            response_bag.push(null, new Payload('response body'));
-            assert.equal(1, response_bag.responses().length);
-
-            var response = response_bag.responses()[0];
-            assert.equal(null, response.error);
-

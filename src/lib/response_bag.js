@@ -8,7 +8,7 @@ function ResponseBag(size) {
     this.contents = [];
 }
 
-ResponseBag.prototype.totalSize = function() {
+ResponseBag.prototype.total = function() {
     return this.size;
 };
 
