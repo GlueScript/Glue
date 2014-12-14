@@ -18,7 +18,9 @@ module.exports = (function() {
         var parser = new Parser(req.body);
 
         // pass callback to write to response.json()
-        var exe = new Exe(parser, function(result) {
+        // should pass callback to start() method no constructor?
+        var exe = new Exe(parser, function(error, result) {
+            // if error is set return a 400 response with result body
             res.json(
                 {result: result}
             );
