@@ -8,6 +8,7 @@ var app = require('express')(),
 
 // only expect text/* cotent types, in fact text/plain
 app.use(bodyParser.text({type : 'text/*', limit: '1024kb'}));
+// extended to accept an array of scripts
 
 exports.start = function(port){
     app.use('/', routes);
