@@ -63,6 +63,20 @@ describe('Payload', function() {
             assert.equal('text/plain', payload.type);
             assert.equal(value, payload.content);
         });
+
+        it('should accept a type for contents', function(){
+            // force the content type to be application/json
+            var value =  'a json string';
+            var payload = new Payload(value, 'application/json');
+            assert.equal('application/json', payload.type);
+        });
+
+        it('should treat a html string as text/plain if specified', function(){
+            var value = '<html>' + "\n" + '<html><head></head><body></body></html>';
+            var payload = new Payload(value, 'text/plain');
+            assert.equal('text/plain', payload.type);
+            assert.equal(value, payload.content);
+        });
     });
 
     describe('split', function() {

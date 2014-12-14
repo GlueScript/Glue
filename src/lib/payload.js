@@ -16,17 +16,17 @@ function Payload(content, type) {
             }
         }
         this.content = JSON.stringify(real);
-        this.type = 'application/json';
+        this.type = type || 'application/json';
         // attempt to convert each item to a 
     } else if (content instanceof Object) {
         this.content = JSON.stringify(content);
-        this.type = 'application/json';
+        this.type = type || 'application/json';
     } else {
         this.content = content;
         if (isJSON(content)) {
-            this.type = 'application/json';
+            this.type = type || 'application/json';
         } else {
-            this.type = getContentType(this.content);
+            this.type = type || getContentType(this.content);
         }
     }
 }
