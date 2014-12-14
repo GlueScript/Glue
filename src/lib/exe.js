@@ -61,7 +61,7 @@ Exe.prototype.request = function(command, payload) {
     request(command, function(error, response, response_body) {
         if (!error && response.statusCode == 200){
             console.log('Success');
-            exe.receive(null, new Payload(response_body));
+            exe.receive(null, new Payload(response_body, response.headers['content-type']));
         } else {
             // receive success and failure the same so that we complete all pending requests
             // before calling end()
