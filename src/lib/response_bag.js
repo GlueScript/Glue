@@ -1,3 +1,5 @@
+var Payload = require('./payload');
+
 /**
  * Container for incoming responses 
  */
@@ -38,6 +40,25 @@ ResponseBag.prototype.errors = function() {
 
 ResponseBag.prototype.responses = function() {
     return this.contents;
+};
+
+/**
+ * If there is 2 or more responses return a Payload containing an array of the responses
+ * If there is 1 response return that Payload
+ * If there are 0 responses return a Payload with empty contents
+ */
+ResponseBag.prototype.join = function() {
+    if (this.contents.length == 0) {
+        return new Payload('');
+    } else if (this.contents.length == 1){
+        return this.contents[0].payload;
+    } else {
+        var all = [];
+        for (var i in this.contents){
+            all.push(this.contents[i].payload.content);
+        }
+        return new Payload(all);
+    }
 };
 
 module.exports = ResponseBag;
