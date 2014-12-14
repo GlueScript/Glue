@@ -19,35 +19,34 @@ function Exe(parser, callback) {
  */
 Exe.prototype.start = function() {
     console.log('Start');
-    this.runNext(new Payload(''));
+    this.next(new Payload(''));
 };
 
 /**
  * We just want the content-type / mime-type of the body string
  * not all the previous response headers. 
  */
-Exe.prototype.runNext = function(payload) {
+Exe.prototype.next = function(payload) {
 
-    this.incoming = [];
     var command = this.parser.next();
 
     if (command) {
         if (command.operator == 'split'){
             // split body, expect json array
             // caution - payload might be an array if split appears twice in the script...
-            this.runNext(payload.split());
+            this.next(payload.split());
         } else {
             if (!(payload instanceof Array)){
                 payload = [payload];
             }
-            this.request_count = payload.length;
+            this.incoming = new ResponseBag(payload.length);
             // generate a request per item
-            for(var key in payload) {
+            for (var key in payload) {
                 this.request(command, payload[key]);
             }
         }
     } else {
-        this.end(join(payload));
+        this.end(null, payload);
     }
 };
 
@@ -56,7 +55,7 @@ Exe.prototype.request = function(command, payload) {
     command['body'] = payload.content;
     command['headers'] = {'content-type': payload.type};
 
-    console.log('request() : ' + command.uri + ' : ' + payload.type + ' ' + exe.request_count);
+    console.log('request() : ' + command.uri + ' : ' + payload.type + ' ' + exe.incoming.total());
 
     request(command, function(error, response, response_body) {
         if (!error && response.statusCode == 200){
@@ -75,41 +74,21 @@ Exe.prototype.request = function(command, payload) {
  * Callback from each request
 */
 Exe.prototype.receive = function(error, payload) {
-    this.incoming.push(payload);
-    // if incoming equals request_count then call runNext
-    if (this.incoming.length == this.request_count){
-        this.request_count = 0;
-        if (this.incoming.length > 1) {
-            // join incoming and run next command
-            this.runNext(join(this.incoming));
+    this.incoming.push(error, payload);
+    if (this.incoming.full()) {
+        if (!this.incoming.errors){ 
+            this.next(this.incoming.join());
         } else {
-            this.runNext(this.incoming[0]);
+            // need to send a JSON string not a raw array to end()
+            this.end('Error', this.incoming.responses());
         }
     }
 }
 
-Exe.prototype.end = function(result) {
+Exe.prototype.end = function(error, result) {
     console.log('End');
     // return the result as a string
-    this.callback(result);
+    this.callback(error, result);
 };
-
-/**
- */
-function join(payload) {
-    // deal with Arrays of Payload instances
-    if (payload instanceof Array){
-        var all = [];
-        for(var item in payload){
-            // if item is a JSON string then convert to an Array or Object here
-            // so that when we stringify Payload it can be deserialized by the next service
-            // console.log('payload[item].content : ' + payload[item].content);
-            all.push(payload[item].content);
-        }
-        return new Payload(all);
-    } else {
-        return payload;
-    }
-}
 
 module.exports = Exe;
