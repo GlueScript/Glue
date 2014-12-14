@@ -66,7 +66,6 @@ Exe.prototype.request = function(command, payload) {
             // receive success and failure the same so that we complete all pending requests
             // before calling end()
             console.log('Error');
-            // exe.end('Failure: ' + error);
             exe.receive(error, new Payload('Failure :' + error));
         }
     });
@@ -96,7 +95,6 @@ Exe.prototype.end = function(result) {
 };
 
 /**
- * Should / can this be on Payload class?
  */
 function join(payload) {
     // deal with Arrays of Payload instances
