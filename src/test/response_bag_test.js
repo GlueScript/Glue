@@ -80,17 +80,17 @@ describe('ResponseBag', function() {
         it('should be empty when bag is empty', function(){
             var value = 10;
             var response_bag = new ResponseBag(value);
-            assert.equal(0, response_bag.responses().length);
+            assert.equal('[]', response_bag.responses());
         });
-        it('should contain all responses', function(){
+        it('should return all responses as a JSON string', function(){
             var value = 10;
             var response_bag = new ResponseBag(value);
-            assert.equal(0, response_bag.responses().length);
-            response_bag.push(null, new Payload('response body'));
-            assert.equal(1, response_bag.responses().length);
+            var payload = new Payload('response body');
+            response_bag.push(null, payload);
 
-            var response = response_bag.responses()[0];
-            assert.equal(null, response.error);
+            var responses = response_bag.responses();
+            var expected = JSON.stringify([{error: null, payload: payload}]);
+            assert.equal(expected, responses);
         });
     });
     describe('join', function() {
@@ -109,12 +109,13 @@ describe('ResponseBag', function() {
         });
         it('should return a single Payload containing multiple payloads', function(){
             var response_bag = new ResponseBag(10);
-            response_bag.push(null, new Payload('response body 1'));
-            response_bag.push(null, new Payload('response body 2'));
-            response_bag.push(null, new Payload('response body 3'));
+            var responses = ['r a', 'r b', 'r c'];
+            response_bag.push(null, new Payload(responses[0]));
+            response_bag.push(null, new Payload(responses[1]));
+            response_bag.push(null, new Payload(responses[2]));
             var payload = response_bag.join();
             assert(payload instanceof Payload);
-            var value = JSON.stringify(['response body 1', 'response body 2', 'response body 3']);
+            var value = JSON.stringify(responses);
             assert.equal(payload.content, value);
         });
     });

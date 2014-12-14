@@ -38,8 +38,11 @@ ResponseBag.prototype.errors = function() {
     return false;
 };
 
+/**
+ * Returns the responses as a JSON string?
+ */
 ResponseBag.prototype.responses = function() {
-    return this.contents;
+    return JSON.stringify(this.contents);
 };
 
 /**
