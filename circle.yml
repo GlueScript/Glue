@@ -2,4 +2,5 @@ general:
   build_dir: src
 
 test:
-  - ./node_modules/mocha/bin/mocha --recursive tests
+  override:
+    - ./node_modules/mocha/bin/mocha --recursive tests
