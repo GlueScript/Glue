@@ -2,4 +2,4 @@ general:
   build_dir: src
 
 test:
-  - npm test
+  - ./node_modules/mocha/bin/mocha ./test
