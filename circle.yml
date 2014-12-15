@@ -3,4 +3,4 @@ general:
 
 test:
   override:
-    - ./node_modules/mocha/bin/mocha --recursive tests
+    - npm test
