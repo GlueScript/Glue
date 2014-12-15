@@ -2,4 +2,4 @@ general:
   build_dir: src
 
 test:
-  - ./node_modules/mocha/bin/mocha ./test
+  - ./node_modules/mocha/bin/mocha --recursive tests
