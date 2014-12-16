@@ -6,4 +6,4 @@
 script=$1
 glue=http://192.168.59.103:41990/
 
-curl -X POST -d @$script -H 'Content-Type: text/plain' $glue
+curl -v -X POST -d @$script -H 'Content-Type: text/plain' $glue
