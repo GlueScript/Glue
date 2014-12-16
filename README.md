@@ -4,9 +4,11 @@ Glue
 
 Sticky scripting for HTTP
 
-Runs scripts that glue HTTP requests and responses together. The common format that allows this is that request payloads are either json arrays of 'blobs' or just 'blobs'. Content-types of blobs are detected and used when making requests. 
+This service runs scripts that glue HTTP requests and responses together. 
 
-Participating services need to support HTTP and both arrays of blobs or just single blobs.
+The common transfer format that allows this to work is that request payloads are either json arrays of 'blobs' or just plain 'blobs'. Content-types of blobs are detected and used when making requests. 
+
+Participating services need to support HTTP and be able to deal with arrays of blobs or just single blobs.
 
 How to
 ======
