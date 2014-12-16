@@ -9,15 +9,15 @@ var request = require('request'),
  * parser provides commands in order to be executed
  * callback used when the execution of the commands is completed
 */
-function Exe(parser, callback) {
+function Exe(parser) {
     this.parser = parser;
-    this.callback = callback;
 };
 
 /**
  * Start running the commands from the script
  */
-Exe.prototype.start = function() {
+Exe.prototype.start = function(callback) {
+    this.callback = callback;
     console.log('Start');
     this.next(new Payload(''));
 };

@@ -15,11 +15,8 @@ module.exports = (function() {
 
     routes.post('/', function(req, res) {
         // accept a script in the body of the request
-        var parser = new Parser(req.body);
-
-        // pass callback to write to response.json()
-        // should pass callback to start() method no constructor?
-        var exe = new Exe(parser, function(error, result) {
+        var exe = new Exe(new Parser(req.body));
+        exe.start(function(error, result) {
             // if error is set return a 400 response with result.content
             // result will be a Payload, use it's type to set content-type of response
             res.set({'Content-Type' : result.type});
@@ -29,7 +26,6 @@ module.exports = (function() {
                res.status(200).send(result.content);
             }
         });
-        exe.start();
     });
 
     return routes;
