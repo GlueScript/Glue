@@ -19,6 +19,8 @@ module.exports = (function() {
 
         // pass callback to write to response.json()
         var exe = new Exe(parser, function(result) {
+            // pass status code here
+            // result will be a Payload - use it's type to set content-type of response
             res.json(
                 {result: result}
             );
