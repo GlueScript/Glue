@@ -21,6 +21,7 @@ module.exports = (function() {
         // should pass callback to start() method no constructor?
         var exe = new Exe(parser, function(error, result) {
             // if error is set return a 400 response with result body
+            // result will be a Payload, use it's type to set content-type of response
             res.json(
                 {result: result}
             );
