@@ -76,23 +76,6 @@ describe('ResponseBag', function() {
             assert(response_bag.errors());
         });
     });
-    describe('responses', function() {
-        it('should be empty when bag is empty', function(){
-            var value = 10;
-            var response_bag = new ResponseBag(value);
-            assert.equal('[]', response_bag.responses());
-        });
-        it('should return all responses as a JSON string', function(){
-            var value = 10;
-            var response_bag = new ResponseBag(value);
-            var payload = new Payload('response body');
-            response_bag.push(null, payload);
-
-            var responses = response_bag.responses();
-            var expected = JSON.stringify([{error: null, payload: payload}]);
-            assert.equal(expected, responses);
-        });
-    });
     describe('join', function() {
         it('should be empty when bag is empty', function(){
             var response_bag = new ResponseBag(10);

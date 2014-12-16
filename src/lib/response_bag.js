@@ -39,13 +39,6 @@ ResponseBag.prototype.errors = function() {
 };
 
 /**
- * Returns the responses as a JSON string?
- */
-ResponseBag.prototype.responses = function() {
-    return JSON.stringify(this.contents);
-};
-
-/**
  * If there is 2 or more responses return a Payload containing an array of the responses
  * If there is 1 response return that Payload
  * If there are 0 responses return a Payload with empty contents
