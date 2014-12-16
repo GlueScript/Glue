@@ -12,6 +12,8 @@ md:
   image: timrodger/md
   ports:
     - "41993:80"
+  links:
+    - resource
 
 report:
   image: timrodger/report
@@ -23,6 +25,11 @@ jsonfilter:
   ports:
     - "41995:80"
 
+resource:
+  image: timrodger/resource
+  ports:
+    - "41996:80"
+
 web:
   image: timrodger/glue
   ports:
@@ -32,3 +39,5 @@ web:
     - prepend
     - md
     - report
+    - jsonfilter
+    - resource
