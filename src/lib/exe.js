@@ -19,6 +19,7 @@ function Exe(parser) {
 Exe.prototype.start = function(callback) {
     this.callback = callback;
     console.log('Start');
+    this.start = new Date().getTime();
     this.next(new Payload(''));
 };
 
@@ -85,7 +86,9 @@ Exe.prototype.receive = function(error, payload) {
 }
 
 Exe.prototype.end = function(error, result) {
+    var end = new Date().getTime();
     console.log('End');
+    console.log('Execution took: ' + (end - this.start) + ' ms');
     // return the result as a string
     this.callback(error, result);
 };
