@@ -78,8 +78,8 @@ Exe.prototype.receive = function(error, payload) {
         if (!this.incoming.errors()){ 
             this.next(this.incoming.join());
         } else {
-            // need to send a string not a raw array to end()
-            this.end('Error', this.incoming.responses());
+            // send a Payload to end() function
+            this.end('Error', this.incoming.join());
         }
     }
 }
