@@ -75,7 +75,7 @@ Exe.prototype.request = function(command, payload) {
 Exe.prototype.receive = function(error, payload) {
     this.incoming.push(error, payload);
     if (this.incoming.full()) {
-        if (!this.incoming.errors){ 
+        if (!this.incoming.errors()){ 
             this.next(this.incoming.join());
         } else {
             // need to send a string not a raw array to end()
