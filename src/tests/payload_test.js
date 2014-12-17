@@ -36,6 +36,13 @@ describe('Payload', function() {
             assert.equal(value, payload.content);
         });
 
+        it('should treat an empty string as text/plain', function(){
+            var value = '';
+            var payload = new Payload(value);
+            assert.equal('text/plain', payload.type);
+            assert.equal(value, payload.content);
+        });
+
         it('should treat an unformatted string as text/plain', function(){
             var value = 'A plain old string';
             var payload = new Payload(value);

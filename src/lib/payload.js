@@ -1,4 +1,4 @@
-var Parser = require('xmldom').DOMParser;
+var DOMParser = require('xmldom').DOMParser;
 
 /*
  * Contains a request payload
@@ -59,7 +59,15 @@ function isJSON(content) {
 
 function getContentType(content) {
     try {
-        var doc = new Parser().parseFromString(content);
+        // pass in stub error callbacks to suppress error logging
+        var doc = new DOMParser({
+            locator: {},
+            errorHandler: {
+                error: function(){},
+                fatalError: function(){}
+            }
+        }).parseFromString(content);
+
         var documentElement = (doc ? doc.ownerDocument || doc : 0).documentElement;
         if (documentElement) {
             var name = documentElement.nodeName.toLowerCase();
