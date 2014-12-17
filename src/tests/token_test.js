@@ -25,7 +25,7 @@ describe('Token', function() {
             assert(!token.isOperator());
         });
         it('should return false when token is a method', function(){
-            var value = '>>';
+            var value = 'POST';
             var token = new Token(value);
             assert(!token.isOperator());
         });
@@ -37,11 +37,11 @@ describe('Token', function() {
             assert.equal(value, token.getValue());
         });
         it('should return token value for method', function(){
-            var value = '>>';
+            var value = 'POST';
             var token = new Token(value);
             assert.equal('POST', token.getValue());
         });
-        it('should return null value for unrecognised method', function(){
+        it('should return null value for unrecognised token value', function(){
             var value = '>+';
             var token = new Token(value);
             assert.equal(null, token.getValue());
@@ -53,8 +53,18 @@ describe('Token', function() {
         });
     });
     describe('isMethod', function() {
-        it('should return true for >>', function(){
-            var value = '>>';
+        it('should return true for POST', function(){
+            var value = 'POST';
+            var token = new Token(value);
+            assert(token.isMethod());
+        });
+        it('should return true for GET', function(){
+            var value = 'GET';
+            var token = new Token(value);
+            assert(token.isMethod());
+        });
+        it('should return true for PUT', function(){
+            var value = 'PUT';
             var token = new Token(value);
             assert(token.isMethod());
         });
@@ -72,6 +82,23 @@ describe('Token', function() {
             var value = '/';
             var token = new Token(value);
             assert(!token.isMethod());
+        });
+    });
+    describe('isUri', function() {
+        it('should return true for a uri', function(){
+            var value = 'http://service.net:88/path/?var=2&x=44+w#sss';
+            var token = new Token(value);
+            assert(token.isUri());
+        });
+        it('should return false for a method', function(){
+            var value = 'POST';
+            var token = new Token(value);
+            assert(!token.isUri());
+        });
+        it('should return false for an operator', function(){
+            var value = '/';
+            var token = new Token(value);
+            assert(!token.isUri());
         });
     });
 });
