@@ -4,12 +4,12 @@ var Tokenizer = require('../lib/tokenizer'),
 describe('Tokenizer', function() {
     describe('hasMore', function() {
         it('should return true when one token exists', function(){
-            var script = 'uri';
+            var script = 'GET http://uri';
             var tokenizer = new Tokenizer(script);
             assert(tokenizer.hasMore());
         });
         it('should return true when more tokens exist', function(){
-            var script = 'uri >> service';
+            var script = 'GET http://uri POST http://service';
             var tokenizer = new Tokenizer(script);
             tokenizer.next();
             tokenizer.next();
@@ -29,18 +29,20 @@ describe('Tokenizer', function() {
     });
     describe('next', function() {
         it('should return tokens in order', function(){
-            var script = 'uri >> service';
+            var script = 'GET http://uri POST http://service';
             var tokenizer = new Tokenizer(script);
-            assert.equal('uri', tokenizer.next().getValue());
+            assert.equal('GET', tokenizer.next().getValue());
+            assert.equal('http://uri', tokenizer.next().getValue());
             assert.equal('POST', tokenizer.next().getValue());
-            assert.equal('service', tokenizer.next().getValue());
+            assert.equal('http://service', tokenizer.next().getValue());
         });
         it('should ignore all whitespace', function(){
-            var script = 'uri   >>    service';
+            var script = 'GET http://uri   POST    http://service';
             var tokenizer = new Tokenizer(script);
-            assert.equal('uri', tokenizer.next().getValue());
+            assert.equal('GET', tokenizer.next().getValue());
+            assert.equal('http://uri', tokenizer.next().getValue());
             assert.equal('POST', tokenizer.next().getValue());
-            assert.equal('service', tokenizer.next().getValue());
+            assert.equal('http://service', tokenizer.next().getValue());
         });
         it('should return undefined when no tokens exist', function(){
             var script = '';
