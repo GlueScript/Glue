@@ -1,5 +1,5 @@
-http://resource/
-    >> http://dom/?xpath=//img/@src
-    / >> http://prepend/?prepend=http://resource/
-    / >> http://md/
-    >> http://report/
+GET http://resource/
+    POST http://dom/?xpath=//img/@src
+    / POST http://prepend/?prepend=http://resource/
+    / POST http://md/
+    POST http://report/

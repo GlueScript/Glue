@@ -1,5 +1,5 @@
-http://en.wikipedia.org/wiki/Main_Page 
-    >> http://dom/?xpath=//a/@href
-    >> http://prepend/?prepend=http:
-    / >> http://md/
-    >> http://report/
+GET http://en.wikipedia.org/wiki/Main_Page 
+    POST http://dom/?xpath=//img/@src
+    POST http://prepend/?prepend=http:
+    / POST http://md/
+    POST http://report/
