@@ -30,6 +30,11 @@ resource:
   ports:
     - "41996:80"
 
+csv:
+  image: timrodger/csv
+  ports:
+    - "41997:80"
+
 web:
   image: timrodger/glue
   ports:
@@ -41,3 +46,4 @@ web:
     - report
     - jsonfilter
     - resource
+    - csv

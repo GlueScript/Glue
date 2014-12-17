@@ -9,7 +9,7 @@ module.exports = (function() {
     routes.get('/', function (req, res) {
         res.json({
             name : 'Glue', 
-            description : "Sticky scripting for services"
+            description : "Sticky scripting for HTTP"
         });
     });
 

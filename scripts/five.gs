@@ -3,3 +3,4 @@ GET http://en.wikipedia.org/wiki/Main_Page
     POST http://prepend/?prepend=http:
     / POST http://md/
     POST http://report/
+    POST http://csv/
