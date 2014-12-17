@@ -25,10 +25,6 @@ Parser.prototype.next = function() {
             }
         } else if (token.isOperator()){
             return {operator : token.getValue()}; 
-        } else {
-            // ought to check that token is not a method or operator, if so then it's an invalid script
-            // for v1 at least
-            return {method: 'GET', uri: token.getValue()};
         }
     }
 };
