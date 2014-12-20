@@ -11,7 +11,7 @@ function Parser(string) {
 /**
  * Return a command object with a method and uri property
  * Throw exception if script is invalid
- * Should be 'operator uri' or just 'uri' which means GET 'uri'
+ * Should be 'operator uri' or just '/'
  */
 Parser.prototype.next = function() {
     if (this.tokenizer.hasMore()){
