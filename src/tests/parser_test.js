@@ -199,8 +199,6 @@ describe('Parser', function() {
             
             assert.equal('POST', commands[1].method);
             assert.equal('http://c', commands[1].uri);
-
-            
         });
     });
 });
