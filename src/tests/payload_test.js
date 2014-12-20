@@ -121,13 +121,19 @@ describe('Payload', function() {
     });
 
     describe('value', function() {
-        it('should return array when created from array', function() {
+        it('should return an array when created from an array', function() {
             var value = ['a','b','c'];
             var payload = new Payload(value);
             assert(_.isArray(payload.value()));
         });
 
-        it('should return string when created from string', function() {
+        it('should return an object when created from an object', function() {
+            var value = {name: 'a', value: 'b', other: 'c'};
+            var payload = new Payload(value);
+            assert(_.isObject(payload.value()));
+        });
+
+        it('should return a string when created from a string', function() {
             var value = 'a string';
             var payload = new Payload(value);
             assert.equal(value, payload.value());
