@@ -30,26 +30,26 @@ describe('Token', function() {
             assert(!token.isOperator());
         });
     });
-    describe('getValue', function() {
+    describe('value', function() {
         it('should return token value', function(){
             var value = 'http://filter.net/?q=w';
             var token = new Token(value);
-            assert.equal(value, token.getValue());
+            assert.equal(value, token.value());
         });
         it('should return token value for method', function(){
             var value = 'POST';
             var token = new Token(value);
-            assert.equal('POST', token.getValue());
+            assert.equal('POST', token.value());
         });
         it('should return null value for unrecognised token value', function(){
             var value = '>+';
             var token = new Token(value);
-            assert.equal(null, token.getValue());
+            assert.equal(null, token.value());
         });
         it('should return split for /', function(){
             var value = '/';
             var token = new Token(value);
-            assert.equal('split', token.getValue());
+            assert.equal('split', token.value());
         });
     });
     describe('isMethod', function() {
