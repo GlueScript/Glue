@@ -1,44 +1,44 @@
 dom:
   image: timrodger/dom
   ports:
-    - "41991:80"
+    - "80"
 
 prepend:
   image: timrodger/prepend
   ports:
-    - "41992:80"
+    - "80"
 
 md:
   image: timrodger/md
   ports:
-    - "41993:80"
+    - "80"
   links:
     - resource
 
 report:
   image: timrodger/report
   ports:
-    - "41994:80"
+    - "80"
 
 jsonfilter:
   image: timrodger/json-filter
   ports:
-    - "41995:80"
+    - "80"
 
 resource:
   image: timrodger/resource
   ports:
-    - "41996:80"
+    - "80"
 
 csv:
   image: timrodger/csv
   ports:
-    - "41997:80"
+    - "80"
 
 web:
   image: timrodger/glue
   ports:
-    - "41990:80"
+    - "80"
   links:
     - dom
     - prepend

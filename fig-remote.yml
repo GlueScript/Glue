@@ -1,34 +1,47 @@
 dom:
   image: timjr/dom
   ports:
-    - "41991:80"
+    - "80"
 
 prepend:
   image: timjr/prepend
   ports:
-    - "41992:80"
+    - "80"
 
 md:
   image: timjr/md
   ports:
-    - "41993:80"
+    - "80"
 
 report:
   image: timjr/report
   ports:
-    - "41994:80"
+    - "80"
 
 jsonfilter:
   image: timjr/json-filter
   ports:
-    - "41995:80"
+    - "80"
+
+resource:
+  image: timjr/resource
+  ports:
+    - "80"
+
+csv:
+  image: timjr/csv
+  ports:
+    - "80"
 
 web:
   image: timjr/glue
   ports:
-    - "41990:80"
+    - "80"
   links:
     - dom
     - prepend
     - md
     - report
+    - jsonfilter
+    - resource
+    - csv
