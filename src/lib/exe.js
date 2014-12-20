@@ -43,9 +43,9 @@ Exe.prototype.next = function(payload) {
 
             this.incoming = new ResponseBag(payload.length * next.commands.length);
             // generate a request per item in payload for each command
-            for (var key in payload) {
-                for (var i in next.commands) {
-                    this.request(next.commands[i], payload[key]);
+            for (var p in payload) {
+                for (var c in next.commands) {
+                    this.request(next.commands[c], payload[p]);
                 }
             }
         }
