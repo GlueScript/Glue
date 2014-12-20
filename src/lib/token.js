@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 /**
  * Token class encapsulates a token with these public method
  *
@@ -6,6 +8,12 @@
  * isMethod - test if the token is a script method, eg. POST
  * getValue - return the value of the token
  */
+var operators = {
+    '/' : 'split',
+    '+' : 'join',
+    '(' : 'start-group',
+    ')' : 'end-group'
+};
 
 function Token(value) {
     this.value = value;
