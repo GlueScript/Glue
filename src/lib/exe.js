@@ -44,8 +44,8 @@ Exe.prototype.next = function(payload) {
             this.incoming = new ResponseBag(payload.length * next.commands.length);
             // generate a request per item in payload for each command
             for (var key in payload) {
-                for (var command in next.commands) {
-                    this.request(command, payload[key]);
+                for (var i in next.commands) {
+                    this.request(commands[i], payload[key]);
                 }
             }
         }
@@ -59,7 +59,7 @@ Exe.prototype.request = function(command, payload) {
     command['body'] = payload.content;
     command['headers'] = {'content-type': payload.type};
 
-    console.log('request() : ' + command.uri + ' : ' + payload.type + ' ' + exe.incoming.total());
+    console.log('request : ' + command.method + ' ' + command.uri + ' : ' + payload.type + ' ' + exe.incoming.total());
 
     request(command, function(error, response, response_body) {
         if (!error && response.statusCode == 200){
