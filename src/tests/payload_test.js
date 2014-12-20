@@ -1,5 +1,6 @@
 var Payload = require('../lib/payload'),
-    assert = require('assert');
+    assert = require('assert'),
+    _ = require('underscore');
 
 describe('Payload', function() {
     describe('construct', function() {
@@ -116,6 +117,20 @@ describe('Payload', function() {
             assert.equal('b', payloads[1].content);
             assert(payloads[2] instanceof Payload);
             assert.equal('c', payloads[2].content);
+        });
+    });
+
+    describe('value', function() {
+        it('should return array when created from array', function() {
+            var value = ['a','b','c'];
+            var payload = new Payload(value);
+            assert(_.isArray(payload.value()));
+        });
+
+        it('should return string when created from string', function() {
+            var value = 'a string';
+            var payload = new Payload(value);
+            assert.equal(value, payload.value());
         });
     });
 });

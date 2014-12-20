@@ -48,6 +48,13 @@ Payload.prototype.split = function() {
     return items;
 };
 
+Payload.prototype.value = function() {
+    if ('application/json' === this.type){
+        return JSON.parse(this.content);
+    }
+    return this.content;
+};
+
 function isJSON(content) {
     try {
         JSON.parse(content);
