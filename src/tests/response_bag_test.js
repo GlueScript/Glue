@@ -101,5 +101,15 @@ describe('ResponseBag', function() {
             var value = JSON.stringify(responses);
             assert.equal(payload.content, value);
         });
+        it('should merge top level arrays', function(){
+            var response_bag = new ResponseBag(3);
+            var responses = [['z', 'a'], ['y', 'b']];
+            response_bag.push(null, new Payload(responses[0]));
+            response_bag.push(null, new Payload(responses[1]));
+            var payload = response_bag.join();
+            assert(payload instanceof Payload);
+            console.log(payload.value());
+            assert.equal(payload.content, JSON.stringify(['z', 'a', 'y', 'b']));
+        });
     });
 });
