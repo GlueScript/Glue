@@ -23,20 +23,26 @@ describe('Parser', function() {
             assert.equal(null, parser.next());
         });
 
-        it('should return no commands when only uri is present', function() {
+        it('should throw Error when only uri is present', function() {
             var script = 'http://service/';
             var parser = new Parser(script);
             
-            assert.equal(null, parser.next());
+            assert.throws(function () {parser.next();}, Error, 'Invalid script. Expected a method or operator.');
         });
 
-        it('should return no commands when only operator is present', function() {
+        it('should throw Error when only uri is left', function() {
             var script = 'GET http://service/ http://other.net/';
             var parser = new Parser(script);
             //remove first command
             var cmd = parser.next();
 
-            assert.equal(null, parser.next());
+            assert.throws(function () {parser.next();}, Error, 'Invalid script. Expected a method or operator.');
+        });
+
+        it('should throw Error when only method is present', function() {
+            var script = 'GET'; 
+            var parser = new Parser(script);
+            assert.throws(function () {parser.next();}, Error, 'Invalid script. Expected a uri.');
         });
 
         it('should return all commands when they exist', function() {
@@ -70,6 +76,13 @@ describe('Parser', function() {
             assert.equal('http://service', command.uri);
 
             assert.equal(null, parser.next());
+        });
+
+        it('should reject two methods in a row', function() {
+            var script = 'GET POST http://service';
+            var parser = new Parser(script);
+
+            assert.throws(function () {parser.next();}, Error, 'Invalid script. Expected a uri.');
         });
     });
 });

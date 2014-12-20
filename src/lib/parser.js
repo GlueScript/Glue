@@ -16,15 +16,22 @@ function Parser(string) {
 Parser.prototype.next = function() {
     if (this.tokenizer.hasMore()){
         var token = this.tokenizer.next();
+        // enforce method followed by uri
         if (token.isMethod()){
             if (this.tokenizer.hasMore()){
-                /**
-                * @todo handle scripts where two methods appear adjacent
-                */
-                return {method: token.getValue(), uri: this.tokenizer.next().getValue()};
+                var next = this.tokenizer.next();
+                if (next.isUri()) {
+                    return {method: token.getValue(), uri: next.getValue()};
+                } else {
+                    throw new Error('Invalid script. Expected a uri.');
+                }
+            } else {
+                throw new Error('Invalid script. Expected a uri.');
             }
         } else if (token.isOperator()){
             return {operator : token.getValue()}; 
+        } else {
+            throw new Error('Invalid script. Expected method or operator');
         }
     }
 };
