@@ -45,7 +45,7 @@ Exe.prototype.next = function(payload) {
             // generate a request per item in payload for each command
             for (var key in payload) {
                 for (var i in next.commands) {
-                    this.request(commands[i], payload[key]);
+                    this.request(next.commands[i], payload[key]);
                 }
             }
         }
