@@ -29,10 +29,10 @@ Exe.prototype.start = function(callback) {
  */
 Exe.prototype.next = function(payload) {
 
-    var command = this.parser.next();
+    var next = this.parser.next();
 
-    if (command) {
-        if (command.operator == 'split'){
+    if (next) {
+        if (next.operator == 'split'){
             // split body, expect json array
             // caution - payload might be an array if split appears twice in the script...
             this.next(payload.split());
@@ -43,7 +43,7 @@ Exe.prototype.next = function(payload) {
             this.incoming = new ResponseBag(payload.length);
             // generate a request per item
             for (var key in payload) {
-                this.request(command, payload[key]);
+                this.request(next, payload[key]);
             }
         }
     } else {
