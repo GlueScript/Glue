@@ -86,5 +86,27 @@ describe('Parser', function() {
 
             assert.throws(function () {parser.next();}, Error, 'Invalid script. Expected a uri.');
         });
+
+        it('should handle group commands', function() {
+            var script = 'GET http://uri + ( POST http://a POST http://b )';
+            var parser = new Parser(script);
+
+            var command = parser.next().commands[0];
+            assert.equal('GET', command.method);
+            assert.equal('http://uri', command.uri);
+
+            var next = parser.next();
+            
+            assert(next.commands instanceof Array);
+
+            assert.equal('POST', next.commands[0].method);
+            assert.equal('http://a', next.commands[0].uri);
+
+            assert.equal('POST', next.commands[1].method);
+            assert.equal('http://b', next.commands[1].uri);
+
+            assert.equal(null, parser.next());
+        });
+
     });
 });
