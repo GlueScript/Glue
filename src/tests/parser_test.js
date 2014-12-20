@@ -108,5 +108,99 @@ describe('Parser', function() {
             assert.equal(null, parser.next());
         });
 
+        it('should throw an error for group without start', function() {
+            var script = 'GET http://uri + POST http://a POST http://b POST http://c)';
+            var parser = new Parser(script);
+
+            var command = parser.next().commands[0];
+            assert.equal('GET', command.method);
+            assert.equal('http://uri', command.uri);
+
+            assert.throws(function () {parser.next();}, Error, 'Invalid script. Start-group must follow join');
+            
+        });
+
+        it('should throw an error for group without end', function() {
+            var script = 'GET http://uri + ( POST http://a POST http://b POST http://c';
+            var parser = new Parser(script);
+
+            var command = parser.next().commands[0];
+            assert.equal('GET', command.method);
+            assert.equal('http://uri', command.uri);
+
+            assert.throws(function () {parser.next();}, Error, 'Invalid script. End-group must end a group of commands');
+            
+        });
+
+        it('should throw an error for group that starts with uri', function() {
+            var script = 'GET http://uri + ( http://a POST http://b )';
+            var parser = new Parser(script);
+
+            var command = parser.next().commands[0];
+            assert.equal('GET', command.method);
+            assert.equal('http://uri', command.uri);
+
+            assert.throws(function () {parser.next();}, Error, 'Invalid script. Group must start with a uri');
+            
+        });
+
+        it('should handle groups in the middle of scripts', function() {
+            var script = 'GET http://uri + ( POST http://a POST http://b ) POST http://c';
+            var parser = new Parser(script);
+
+            var command = parser.next().commands[0];
+            assert.equal('GET', command.method);
+            assert.equal('http://uri', command.uri);
+
+            commands = parser.next().commands;
+            assert.equal(2, commands.length);
+            assert.equal('POST', commands[0].method);
+            assert.equal('http://a', commands[0].uri);
+            assert.equal('POST', commands[1].method);
+            assert.equal('http://b', commands[1].uri);
+
+            commands = parser.next().commands;
+            assert.equal(1, commands.length);
+            assert.equal('POST', commands[0].method);
+            assert.equal('http://c', commands[0].uri);
+        });
+
+        it('should handle groups at the start of scripts', function() {
+            var script = '+ ( GET http://uri GET http://a ) POST http://b';
+            var parser = new Parser(script);
+
+            var commands = parser.next().commands;
+            assert.equal('GET', commands[0].method);
+            assert.equal('http://uri', commands[0].uri);
+
+            assert.equal('GET', commands[1].method);
+            assert.equal('http://a', commands[1].uri);
+            
+            commands = parser.next().commands;
+
+            assert.equal('POST', commands[0].method);
+            assert.equal('http://b', commands[0].uri);
+        });
+
+        it('should handle groups after split', function() {
+            var script = 'GET http://a / + ( POST http://b POST http://c )';
+            var parser = new Parser(script);
+
+            var commands = parser.next().commands;
+            assert.equal(1, commands.length);
+            assert.equal('GET', commands[0].method);
+            assert.equal('http://a', commands[0].uri);
+            
+            assert.equal('split', parser.next().operator);
+
+            commands = parser.next().commands;
+            assert.equal('POST', commands[0].method);
+            assert.equal('http://b', commands[0].uri);
+            
+            assert.equal('POST', commands[1].method);
+            assert.equal('http://c', commands[1].uri);
+
+            
+        });
     });
 });

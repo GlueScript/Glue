@@ -27,21 +27,23 @@ Parser.prototype.next = function() {
             } else if (token.getValue() == 'join') {
                 // if token.value is join then build a list of commands enclosed by ()s
                 if (this.tokenizer.next().getValue() != 'start-group'){
-                    throw new Error('start-group must follow join');
+                    throw new Error('Invalid script. Start-group must follow join');
                 }
 
                 var commands = [], next;
 
                 while (next = this.tokenizer.next()){
                     if (next.isOperator() && (next.getValue() == 'end-group')){
-                        break;
+                        return {commands: commands};
                     }
 
                     if (next.isMethod()){
                         commands.push(nextCommand(next, this.tokenizer));
+                    } else {
+                        throw new Error('Invalid script. Group must start with a uri');
                     }
                 }
-                return {commands: commands};
+                throw new Error('Invalid script. End-group must end a group of commands');
             } else {
                 throw new Error('Invalid script. Expected "split" or "join". Got ' + token.getValue());
             }
@@ -53,11 +55,11 @@ Parser.prototype.next = function() {
 };
 
 function nextCommand(method, tokenizer) {
-    // enforce method followed by uri
     if (tokenizer.hasMore()){
         var uri = tokenizer.next();
+        // enforce rule that a method is followed by a uri
         if (uri.isUri()) {
-            // return an object with a commands array
+            // return a command
             return {method: method.getValue(), uri: uri.getValue()};
         } else {
             throw new Error('Invalid script. Expected a uri, got ' + uri.getValue());
