@@ -1,25 +1,23 @@
 Valid scripts
 
-http://entity.net/thing >> http://service.net/ (GET first uri and POST the response to second uri)
-http://entity.net/thing >> http://service.net/ >> http://filter.net/ (GET first uri and POST the response to second uri POST that response to third uri)
+GET http://entity.net/thing 
+    POST http://service.net/ (GET first uri and POST the response to second uri)
 
-<< indicates make a GET request or just use the raw uri as a GET uri command?
->> indicates make a POST request with the body of the previous response (requires a prev request)
->+ indicates make a PUT request with the body of the previous response (requires a prev request)
->- indicates make a DELETE request
+GET http://entity.net/thing 
+    POST http://service.net/ 
+    POST http://filter.net/ (GET first uri and POST the response to second uri POST that response to third uri)
 
-Can we support ">> http://service.com" - make a POST with no data/body?
+No special verb symbols, methods are HTTP verbs, thus a script can use whatever verbs the endpoint suports.
+
+GET indicates make a GET request 
+POST indicates make a POST request with the body of the previous response
+PUT indicates make a PUT request with the body of the previous response
+DELETE indicates make a DELETE request
 
 Implement / to mean split the response body (expect a json array)
 
-http://entity.net/thing >> http://dom.net/?f=//a/@href />> http://scrapper.net
+GET http://entity.net/thing 
+    POST http://dom.net/?f=//a/@href 
+    / POST http://scrapper.net
 
-GET the first uri and POST its response to dom.net to extract the href attribute values of all a tags, then split the response from this and POST each item to scrapper.net. Respond with the contents of the result of the last request
-
-If a service returns an array of uris can I GET each one in the script and do something with its contents rather than have a service do this?
-
-
-Other example uses?? split and join / and +
-
-1) returns an array of uris POST each one to a metadata service which generates metadata for a resource and then collate the results (convert back to an array) and pipe (+>>) into a report
-http:/resource.net/?age>100&age<30000 />> http://resource.md.net/ +>> http://resource.report.net/
+GET the first uri and POST its response to dom.net to extract the href attribute values of all a tags, then split the response from this and POST each item to scrapper.net. Respond with the combination (json array) of the responses to all requests made to scrapper.net
