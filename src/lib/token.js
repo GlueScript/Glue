@@ -24,7 +24,7 @@ function Token(value) {
  * ie the body of the previous response
  */
 Token.prototype.isOperator = function() {
-    return (this.value[0] == '/');
+    return _.has(operators, this.value);
 };
 
 /*
@@ -44,9 +44,7 @@ Token.prototype.isUri = function() {
 
 Token.prototype.getValue = function() {
     if (this.isOperator()){
-        if ('/' == this.value){
-            return 'split';
-        }
+        return operators[this.value];
     } else if (this.isUri() || this.isMethod()){
         return this.value;
     }

@@ -10,7 +10,7 @@ describe('Token', function() {
             assert(token.isOperator());
         });
         it('should return false when token is not recognised', function(){
-            var value = '+';
+            var value = '*';
             var token = new Token(value);
             assert(!token.isOperator());
         });
