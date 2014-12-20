@@ -9,7 +9,9 @@ describe('Parser', function() {
             var script = 'GET http://uri';
             var parser = new Parser(script);
             
-            var command = parser.next();
+            var next = parser.next();
+            assert.equal(1, next.commands.length);
+            var command = next.commands[0];
             assert.equal('GET', command.method);
             assert.equal('http://uri', command.uri);
 
@@ -49,11 +51,11 @@ describe('Parser', function() {
             var script = 'GET http://uri POST http://service';
             var parser = new Parser(script);
 
-            var command = parser.next();
+            var command = parser.next().commands[0];
             assert.equal('GET', command.method);
             assert.equal('http://uri', command.uri);
 
-            var command = parser.next();
+            command = parser.next().commands[0];
             assert.equal('POST', command.method);
             assert.equal('http://service', command.uri);
 
@@ -64,14 +66,14 @@ describe('Parser', function() {
             var script = 'GET http://uri / POST http://service';
             var parser = new Parser(script);
 
-            var command = parser.next();
+            var command = parser.next().commands[0];
             assert.equal('GET', command.method);
             assert.equal('http://uri', command.uri);
 
-            command = parser.next();
-            assert.equal('split', command.operator);
+            var next = parser.next();
+            assert.equal('split', next.operator);
 
-            command = parser.next();
+            command = parser.next().commands[0];
             assert.equal('POST', command.method);
             assert.equal('http://service', command.uri);
 

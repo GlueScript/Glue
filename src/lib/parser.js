@@ -21,7 +21,8 @@ Parser.prototype.next = function() {
             if (this.tokenizer.hasMore()){
                 var next = this.tokenizer.next();
                 if (next.isUri()) {
-                    return {method: token.getValue(), uri: next.getValue()};
+                    // return an object with a commands array
+                    return {commands: [{method: token.getValue(), uri: next.getValue()}]};
                 } else {
                     throw new Error('Invalid script. Expected a uri.');
                 }

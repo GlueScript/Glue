@@ -40,10 +40,13 @@ Exe.prototype.next = function(payload) {
             if (!(payload instanceof Array)){
                 payload = [payload];
             }
-            this.incoming = new ResponseBag(payload.length);
-            // generate a request per item
+
+            this.incoming = new ResponseBag(payload.length * next.commands.length);
+            // generate a request per item in payload for each command
             for (var key in payload) {
-                this.request(next, payload[key]);
+                for (var command in next.commands) {
+                    this.request(command, payload[key]);
+                }
             }
         }
     } else {
