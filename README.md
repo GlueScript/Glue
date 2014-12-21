@@ -52,9 +52,22 @@ Glue scripts can split a payload that is a json array into individual requests u
         / POST http://to-upper/ 
         POST http://sort/
 
-When the words service responds with ["dog", "house", "countryside", "dividend"] then 4 requests are made to the to-upper server each containing a single item from the array. Script execution waits for all requests to complete before continuing and joins the responses back together into a single payload. 
-The to-upper service responds to a request "dog" with "DOG". The glue server joins all these responses so that the request made to the sort service contains ["DOG", "HOUSE", "COUNTRYSIDE", "DIVIDEND"]. 
+When the words service responds with ["dog", "house", "countryside", "dividend"] then 4 requests are made to the to-upper server each containing a single item from the array. Script execution waits for all requests to complete before continuing. 
+The to-upper service responds to a request "dog" with "DOG". The glue server joins all the responses into an array so that the request made to the sort service contains ["DOG", "HOUSE", "COUNTRYSIDE", "DIVIDEND"]. 
 When sort responds with ["COUNTRYSIDE", "DIVIDEND", "DOG", "HOUSE"] then that response body is the response from the glue service.
 
+Joining payloads
+================
 
+Glue scripts can join the responses of 2 or more endpoints into a single payload.
+
+    GET http://resource.net/
+    + (
+        POST http://dom/?xpath=//a/@href
+        POST http://dom/?xpath=//img/@src
+    )
+    POST http://metadata/
+    
+The html document from resource.net is POSTed to both http://dom/?xpath=//a/@href and http://dom/?xpath=//img/@src in parallel and the responses from these services are combined into one array which is POSTed to the metadata service.
+    
 
