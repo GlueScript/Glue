@@ -1,4 +1,6 @@
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('xmldom').DOMParser,
+    _ = require('underscore');
+_.str = require('underscore.string');
 
 /*
  * Contains a request payload
@@ -29,6 +31,9 @@ function Payload(content, type) {
             this.type = type || getContentType(this.content);
         }
     }
+    // trim type, remove everything after the ; eg. '; charset=utf-8'
+    this.type = _.str.words(this.type, ';')[0];
+
 }
 
 Payload.prototype.split = function() {

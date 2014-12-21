@@ -4,8 +4,8 @@
   "description": "Provides scripting for services",
   "main": "index.js",
   "repository": {
-    "url" : "git@github.com:timothy-r/Glue.git",
-    "type" : "git"
+    "url": "git@github.com:timothy-r/Glue.git",
+    "type": "git"
   },
   "scripts": {
     "test": "node_modules/.bin/mocha --recursive tests"
@@ -17,7 +17,8 @@
     "winston": "~0.8.3",
     "xmldom": "~0.1.19",
     "request": "~2.49.0",
-    "underscore": "~1.7.0"
+    "underscore": "~1.7.0",
+    "underscore.string": "~2.4.0"
   },
   "devDependencies": {
     "should": "~4.3.0",

@@ -104,8 +104,20 @@ describe('ResponseBag', function() {
         it('should merge top level arrays', function(){
             var response_bag = new ResponseBag(3);
             var responses = [['z', 'a'], ['y', 'b']];
-            response_bag.push(null, new Payload(responses[0]));
-            response_bag.push(null, new Payload(responses[1]));
+            response_bag.push(null, new Payload(responses[0], 'application/json; charset=utf-8'));
+            response_bag.push(null, new Payload(responses[1], 'application/json; charset=utf-8'));
+
+            var payload = response_bag.join();
+            assert(payload instanceof Payload);
+            console.log(payload.value());
+            assert.equal(payload.content, JSON.stringify(['z', 'a', 'y', 'b']));
+        });
+        it('should merge top level json arrays', function(){
+            var response_bag = new ResponseBag(3);
+            var responses = [JSON.stringify(['z', 'a']), JSON.stringify(['y', 'b'])];
+            response_bag.push(null, new Payload(responses[0], 'application/json'));
+            response_bag.push(null, new Payload(responses[1], 'application/json'));
+
             var payload = response_bag.join();
             assert(payload instanceof Payload);
             console.log(payload.value());
