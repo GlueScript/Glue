@@ -15,7 +15,7 @@ Participating services need to support HTTP and be able to deal with arrays of b
 Running scripts
 ===============
 
-POST the script text with a Content-Type of text/plain to the http://glue-service/ endpoint
+POST the script text with a Content-Type request header of text/plain to the glue service endpoint.
 
     curl -X POST -d @script.gs -H 'Content-Type: text/plain' http://glue.server/
 
