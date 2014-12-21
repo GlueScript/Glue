@@ -8,7 +8,7 @@ _.str = require('underscore.string');
  * Converts Object and Array content to JSON strings
 */
 function Payload(content, type) {
-    if (content instanceof Array) {
+    if (_.isArray(content)) {
         var real = [];
         for (var item in content) {
             if (isJSON(content[item])){
@@ -20,7 +20,7 @@ function Payload(content, type) {
         this.content = JSON.stringify(real);
         this.type = type || 'application/json';
         // attempt to convert each item to a 
-    } else if (content instanceof Object) {
+    } else if (_.isObject(content) ) {
         this.content = JSON.stringify(content);
         this.type = type || 'application/json';
     } else {
@@ -40,7 +40,7 @@ Payload.prototype.split = function() {
     var items = [];
     if (isJSON(this.content)){
         var json = JSON.parse(this.content);
-        if (json instanceof Array) {
+        if (_.isArray(json)) {
             for(var item in json) {
                 items.push(new Payload(json[item]));
             }

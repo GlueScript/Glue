@@ -38,7 +38,7 @@ csv:
 web:
   image: timrodger/glue
   ports:
-    - "80"
+    - "49200:80"
   links:
     - dom
     - prepend
