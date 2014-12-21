@@ -109,7 +109,6 @@ describe('ResponseBag', function() {
 
             var payload = response_bag.join();
             assert(payload instanceof Payload);
-            console.log(payload.value());
             assert.equal(payload.content, JSON.stringify(['z', 'a', 'y', 'b']));
         });
         it('should merge top level json arrays', function(){
@@ -120,7 +119,6 @@ describe('ResponseBag', function() {
 
             var payload = response_bag.join();
             assert(payload instanceof Payload);
-            console.log(payload.value());
             assert.equal(payload.content, JSON.stringify(['z', 'a', 'y', 'b']));
         });
     });
