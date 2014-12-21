@@ -200,5 +200,43 @@ describe('Parser', function() {
             assert.equal('POST', commands[1].method);
             assert.equal('http://c', commands[1].uri);
         });
+
+        it('should handle multiple groups in one script', function() {
+            var script = '+ ( GET http://a GET http://b ) / POST http://c POST http://c2 / POST http://c3 + ( POST http://d POST http://e )';
+            var parser = new Parser(script);
+
+            var commands = parser.next().commands;
+            assert.equal(2, commands.length);
+            assert.equal('GET', commands[0].method);
+            assert.equal('http://a', commands[0].uri);
+            assert.equal('GET', commands[1].method);
+            assert.equal('http://b', commands[1].uri);
+            
+            assert.equal('split', parser.next().operator);
+
+            commands = parser.next().commands;
+            assert.equal(1, commands.length);
+            assert.equal('POST', commands[0].method);
+            assert.equal('http://c', commands[0].uri);
+
+            commands = parser.next().commands;
+            assert.equal(1, commands.length);
+            assert.equal('POST', commands[0].method);
+            assert.equal('http://c2', commands[0].uri);
+
+            assert.equal('split', parser.next().operator);
+
+            commands = parser.next().commands;
+            assert.equal(1, commands.length);
+            assert.equal('POST', commands[0].method);
+            assert.equal('http://c3', commands[0].uri);
+            
+            commands = parser.next().commands;
+            assert.equal(2, commands.length);
+            assert.equal('POST', commands[0].method);
+            assert.equal('http://d', commands[0].uri);
+            assert.equal('POST', commands[1].method);
+            assert.equal('http://e', commands[1].uri);
+        });
     });
 });

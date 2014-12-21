@@ -8,6 +8,16 @@ describe('Tokenizer', function() {
             var tokenizer = new Tokenizer(script);
             assert(tokenizer.hasMore());
         });
+        it('should split tokens on carriage returns', function(){
+            // there are 5 tokens
+            var script = 'GET http://uri\n+ POST http://a';
+            var tokenizer = new Tokenizer(script);
+            tokenizer.next();
+            tokenizer.next();
+            tokenizer.next();
+            tokenizer.next();
+            assert(tokenizer.hasMore());
+        });
         it('should return true when more tokens exist', function(){
             var script = 'GET http://uri POST http://service';
             var tokenizer = new Tokenizer(script);

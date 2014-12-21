@@ -2,6 +2,7 @@ var Token = require('./token.js');
 
 /*
  * Tokenize a Glue script into its elements
+ * split on whitespace and carriage returns
  */
 function Tokenizer(string) {
     this.tokens = string.match(/\S+/g) || [];
