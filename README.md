@@ -24,14 +24,14 @@ Single statement script
 
     GET http://resource.net/
 
-This makes a GET request to the uri and responds with the response to that request.
+This script makes a GET request to http://resource.net/ and responds with the response to that request.
 
 Chaining responses to a request
 ================================
 
     GET http://resource.net/ POST http://words/
     
-A GET request is made to resource.net and when that request responds with success, a POST request with the response body is made to http://words/ . The response from the glue server is the response from the final request in the script.
+A GET request is made to http://resource.net/ when that request responds with success, a POST request with the response body is made to http://words/ . The response from the glue server is the response from the final request in the script.
 
 Longer chains
 ===========
