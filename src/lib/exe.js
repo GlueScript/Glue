@@ -1,6 +1,7 @@
 var request = require('request'),
     Payload = require('./payload')
-    ResponseBag = require('./response_bag');
+    ResponseBag = require('./response_bag'),
+    _ = require('underscore');
 
 /**
  * Executes an array of Command objects
@@ -37,9 +38,7 @@ Exe.prototype.next = function(payload) {
             // caution - payload might be an array if split appears twice in the script...
             this.next(payload.split());
         } else {
-            if (!(payload instanceof Array)){
-                payload = [payload];
-            }
+            payload = _.isArray(payload) ? payload : [payload];
 
             this.incoming = new ResponseBag(payload.length * next.commands.length);
             // generate a request per item in payload for each command
