@@ -17,7 +17,7 @@ Tokenizer.prototype.hasMore = function() {
 };
 
 Tokenizer.prototype.next = function() {
-    if (this.hasMore()){
+    if (this.hasMore()) {
          return new Token(this.tokens[this.index++]);
     } 
 };

@@ -31,8 +31,8 @@ ResponseBag.prototype.push = function(e, p) {
 };
 
 ResponseBag.prototype.errors = function() {
-    for (var res in this.contents){
-        if (this.contents[res].error){
+    for (var res in this.contents) {
+        if (this.contents[res].error) {
             return true;
         }
     }
@@ -48,11 +48,11 @@ ResponseBag.prototype.errors = function() {
 ResponseBag.prototype.join = function() {
     if (this.contents.length == 0) {
         return new Payload('');
-    } else if (this.contents.length == 1){
+    } else if (this.contents.length == 1) {
         return this.contents[0].payload;
     } else {
         var all = [], value;
-        for (var i in this.contents){
+        for (var i in this.contents) {
             value = this.contents[i].payload.value();
             if (_.isArray(value)) {
                 all = all.concat(value);

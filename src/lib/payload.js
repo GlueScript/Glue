@@ -11,7 +11,7 @@ function Payload(content, type) {
     if (_.isArray(content)) {
         var real = [];
         for (var item in content) {
-            if (isJSON(content[item])){
+            if (isJSON(content[item])) {
                 real.push(JSON.parse(content[item]));
             } else {
                 real.push(content[item]);
@@ -38,7 +38,7 @@ function Payload(content, type) {
 
 Payload.prototype.split = function() {
     var items = [];
-    if (isJSON(this.content)){
+    if (isJSON(this.content)) {
         var json = JSON.parse(this.content);
         if (_.isArray(json)) {
             for(var item in json) {
@@ -54,7 +54,7 @@ Payload.prototype.split = function() {
 };
 
 Payload.prototype.value = function() {
-    if ('application/json' === this.type){
+    if ('application/json' === this.type) {
         return JSON.parse(this.content);
     }
     return this.content;
@@ -75,15 +75,15 @@ function getContentType(content) {
         var doc = new DOMParser({
             locator: {},
             errorHandler: {
-                error: function(){},
-                fatalError: function(){}
+                error: function() {},
+                fatalError: function() {}
             }
         }).parseFromString(content);
 
         var documentElement = (doc ? doc.ownerDocument || doc : 0).documentElement;
         if (documentElement) {
             var name = documentElement.nodeName.toLowerCase();
-            if ('html' === name){
+            if ('html' === name) {
                 return 'text/html';
             } else {
                 return 'application/xml';

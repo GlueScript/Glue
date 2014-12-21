@@ -43,9 +43,9 @@ Token.prototype.isUri = function() {
 };
 
 Token.prototype.value = function() {
-    if (this.isOperator()){
+    if (this.isOperator()) {
         return operators[this._value];
-    } else if (this.isUri() || this.isMethod()){
+    } else if (this.isUri() || this.isMethod()) {
         return this._value;
     }
 };
