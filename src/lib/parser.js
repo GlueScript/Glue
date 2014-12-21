@@ -15,13 +15,13 @@ function Parser(string) {
  * Should be 'operator uri' or just '/'
  */
 Parser.prototype.next = function() {
-    if (this.tokenizer.hasMore()){
+    if (this.tokenizer.hasMore()) {
         var token = this.tokenizer.next();
 
         // enforce method followed by uri
-        if (token.isMethod()){
+        if (token.isMethod()) {
             return {commands: [nextCommand(token, this.tokenizer)]};
-        } else if (token.isOperator()){
+        } else if (token.isOperator()) {
             if (token.value() == 'split'){
                 return {operator : token.value()}; 
             } else if (token.value() == 'join') {
@@ -45,7 +45,7 @@ Parser.prototype.next = function() {
                 }
                 throw new Error('Invalid script. End-group must end a group of commands');
             } else {
-                throw new Error('Invalid script. Expected "split" or "join". Got ' + token.value());
+                throw new Error('Invalid script. Expected "split" or "join". Got "' + token.value() + '"');
             }
 
         } else {
