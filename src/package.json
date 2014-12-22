@@ -1,6 +1,6 @@
 {
   "name": "Glue",
-  "version": "0.2.0",
+  "version": "0.6.0",
   "description": "Provides scripting for services",
   "main": "index.js",
   "repository": {
