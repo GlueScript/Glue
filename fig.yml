@@ -35,6 +35,18 @@ csv:
   ports:
     - "80"
 
+mongodb:
+  image: dockerfile/mongodb
+  volumes:
+    - ~/var/db/mongo:/data/db
+
+thing:
+    image: timrodger/thing
+    ports:
+      - "80"
+    links:
+      - mongodb
+
 web:
   image: timrodger/glue
   ports:
@@ -47,3 +59,4 @@ web:
     - jsonfilter
     - resource
     - csv
+    - thing
