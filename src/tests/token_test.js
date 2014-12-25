@@ -99,6 +99,21 @@ describe('Token', function() {
             var value = '/';
             var token = new Token(value);
             assert(!token.isUri());
+         });
+    });
+
+    describe('_value', function() {
+        it('cannot be modified', function() {
+            var value = 'POST'
+            var token = new Token(value);
+            token._value = 'x';
+            assert.equal(value, token._value);
+        });
+        it('cannot be deleted', function() {
+            var value = 'POST'
+            var token = new Token(value);
+            delete token._value;
+            assert.equal(value, token._value);
         });
     });
 });

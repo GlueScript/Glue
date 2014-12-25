@@ -3,7 +3,7 @@ var _ = require('underscore');
 /**
  * Token class encapsulates a token with these public method
  *
- * @todo add isUri method?
+ * isUri - test if the token is a uri
  * isOperator - test if the token is a script operator, eg. / or + (split and join)
  * isMethod - test if the token is a script method, eg. POST
  * value - return the value of the token
@@ -16,7 +16,12 @@ var operators = {
 };
 
 function Token(value) {
-    this._value = value;
+    Object.defineProperty(this, "_value",{
+        enumerable: true,
+        writeable: false,
+        configurable: false,
+        value: value
+    });
 }
 
 /**
