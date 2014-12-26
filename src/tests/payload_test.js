@@ -79,6 +79,36 @@ describe('Payload', function() {
             assert.equal('application/json', payload.type);
         });
 
+        it('type should not be writable', function(){
+            // force the content type to be application/json
+            var value =  'a json string';
+            var payload = new Payload(value, 'application/json');
+            payload.type = 'type';
+            assert.equal('application/json', payload.type);
+        });
+
+        it('type should not be deleteable', function(){
+            // force the content type to be application/json
+            var value =  'a json string';
+            var payload = new Payload(value, 'application/json');
+            delete payload.type;
+            assert.equal('application/json', payload.type);
+        });
+
+        it('content should not be writable', function(){
+            var value =  'a string';
+            var payload = new Payload(value, 'text/plain');
+            payload.content = 'content';
+            assert.equal(value, payload.content);
+        });
+
+        it('content should not be deletable', function(){
+            var value =  'a string';
+            var payload = new Payload(value, 'text/plain');
+            delete payload.content;
+            assert.equal(value, payload.content);
+        });
+
         it('should treat a html string as text/plain if specified', function(){
             var value = '<html>' + "\n" + '<html><head></head><body></body></html>';
             var payload = new Payload(value, 'text/plain');

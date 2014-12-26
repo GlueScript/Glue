@@ -17,23 +17,34 @@ function Payload(content, type) {
                 real.push(content[item]);
             }
         }
-        this.content = JSON.stringify(real);
-        this.type = type || 'application/json';
+        content = JSON.stringify(real);
+        type = type || 'application/json';
         // attempt to convert each item to a 
     } else if (_.isObject(content) ) {
-        this.content = JSON.stringify(content);
-        this.type = type || 'application/json';
+        content = JSON.stringify(content);
+        type = type || 'application/json';
     } else {
-        this.content = content;
         if (isJSON(content)) {
-            this.type = type || 'application/json';
+            type = type || 'application/json';
         } else {
-            this.type = type || getContentType(this.content);
+            type = type || getContentType(content);
         }
     }
-    // trim type, remove everything after the ; eg. '; charset=utf-8'
-    this.type = _.str.words(this.type, ';')[0];
 
+    Object.defineProperty(this, 'content', {
+        writable: false,
+        configurable: false,
+        enumerable: true,
+        value: content
+    });
+
+    // trim type, remove everything after the semi-colon eg. '; charset=utf-8'
+    Object.defineProperty(this, 'type', {
+        writable: false,
+        configurable: false,
+        enumerable: true,
+        value: _.str.words(type, ';')[0]
+    });
 }
 
 Payload.prototype.split = function() {
