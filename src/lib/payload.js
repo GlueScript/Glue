@@ -8,6 +8,7 @@ _.str = require('underscore.string');
  * Converts Object and Array content to JSON strings
 */
 function Payload(content, type) {
+    var default_type = type;
     if (_.isArray(content)) {
         var real = [];
         for (var item in content) {
@@ -18,18 +19,20 @@ function Payload(content, type) {
             }
         }
         content = JSON.stringify(real);
-        type = type || 'application/json';
-        // attempt to convert each item to a 
+        default_type = 'application/json';
     } else if (_.isObject(content) ) {
         content = JSON.stringify(content);
-        type = type || 'application/json';
+        default_type = 'application/json';
     } else {
         if (isJSON(content)) {
-            type = type || 'application/json';
+            default_type = 'application/json';
         } else {
-            type = type || getContentType(content);
+            default_type = getContentType(content);
         }
     }
+    
+    type = type || default_type;
+    type = _.str.words(type, ';')[0];
 
     Object.defineProperty(this, 'content', {
         writable: false,
@@ -43,7 +46,16 @@ function Payload(content, type) {
         writable: false,
         configurable: false,
         enumerable: true,
-        value: _.str.words(type, ';')[0]
+        value: type 
+    });
+
+    Object.defineProperty(this, 'value', {
+        get: function() {
+            if ('application/json' === type) {
+                return JSON.parse(content);
+            }
+            return content;
+        }
     });
 }
 
@@ -62,13 +74,6 @@ Payload.prototype.split = function() {
         items.push(new Payload(this.content));
     }
     return items;
-};
-
-Payload.prototype.value = function() {
-    if ('application/json' === this.type) {
-        return JSON.parse(this.content);
-    }
-    return this.content;
 };
 
 function isJSON(content) {

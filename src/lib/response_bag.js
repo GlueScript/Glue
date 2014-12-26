@@ -53,7 +53,7 @@ ResponseBag.prototype.join = function() {
     } else {
         var all = [], value;
         for (var i in this.contents) {
-            value = this.contents[i].payload.value();
+            value = this.contents[i].payload.value;
             if (_.isArray(value)) {
                 all = all.concat(value);
             } else {
