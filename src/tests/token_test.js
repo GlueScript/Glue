@@ -30,28 +30,30 @@ describe('Token', function() {
             assert(!token.isOperator());
         });
     });
+
     describe('value', function() {
         it('should return token value', function(){
             var value = 'http://filter.net/?q=w';
             var token = new Token(value);
-            assert.equal(value, token.value());
+            assert.equal(value, token.value);
         });
         it('should return token value for method', function(){
             var value = 'POST';
             var token = new Token(value);
-            assert.equal('POST', token.value());
+            assert.equal('POST', token.value);
         });
         it('should return null value for unrecognised token value', function(){
             var value = '>+';
             var token = new Token(value);
-            assert.equal(null, token.value());
+            assert.equal(null, token.value);
         });
         it('should return split for /', function(){
             var value = '/';
             var token = new Token(value);
-            assert.equal('split', token.value());
+            assert.equal('split', token.value);
         });
     });
+
     describe('isMethod', function() {
         it('should return true for POST', function(){
             var value = 'POST';
@@ -84,6 +86,7 @@ describe('Token', function() {
             assert(!token.isMethod());
         });
     });
+
     describe('isUri', function() {
         it('should return true for a uri', function(){
             var value = 'http://service.net:88/path/?var=2&x=44+w#sss';
@@ -106,14 +109,14 @@ describe('Token', function() {
         it('cannot be modified', function() {
             var value = 'POST'
             var token = new Token(value);
-            token._value = 'x';
-            assert.equal(value, token._value);
+            token.value = 'x';
+            assert.equal(value, token.value);
         });
         it('cannot be deleted', function() {
             var value = 'POST'
             var token = new Token(value);
-            delete token._value;
-            assert.equal(value, token._value);
+            delete token.value;
+            assert.equal(value, token.value);
         });
     });
 });
