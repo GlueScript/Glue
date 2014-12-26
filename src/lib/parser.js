@@ -23,11 +23,11 @@ Parser.prototype.next = function() {
             return {commands: [nextCommand(token, this.tokenizer)]};
         } else if (token.isOperator()) {
             if (token.value == 'split') {
-                return {operator : token.value}; 
+                return commandFactory(null, null, token.value);
             } else if (token.value == 'join') {
                 // if token.value is join then build a list of commands enclosed by ()s
                 if (this.tokenizer.next().value != 'start-group') {
-                    throw new Error('Invalid script. Start-group must follow join');
+                    throw new Error('Invalid script. "start-group" must follow "join"');
                 }
 
                 var commands = [], next;
@@ -40,16 +40,16 @@ Parser.prototype.next = function() {
                     if (next.isMethod()) {
                         commands.push(nextCommand(next, this.tokenizer));
                     } else {
-                        throw new Error('Invalid script. Group must start with a uri');
+                        throw new Error('Invalid script. Group must start with "uri" token');
                     }
                 }
-                throw new Error('Invalid script. End-group must end a group of commands');
+                throw new Error('Invalid script. "end-group" must end a group of commands');
             } else {
                 throw new Error('Invalid script. Expected "split" or "join". Got "' + token.value + '"');
             }
 
         } else {
-            throw new Error('Invalid script. Expected method or operator');
+            throw new Error('Invalid script. Expected "method" or "operator"');
         }
     }
 };
@@ -63,13 +63,28 @@ function nextCommand(method, tokenizer) {
         // enforce rule that a method is followed by a uri
         if (uri.isUri()) {
             // return a command
-            return {method: method.value, uri: uri.value};
+            return commandFactory(method.value, uri.value, null);
         } else {
-            throw new Error('Invalid script. Expected a uri, got ' + uri.value);
+            throw new Error('Invalid script. Expected a "uri" token, got ' + uri.value);
         }
     } else {
-        throw new Error('Invalid script. Expected a uri, got nothing.');
+        throw new Error('Invalid script. Expected a "uri" token, got nothing.');
     }
+};
+
+function commandFactory(method, uri, operator) {
+    
+    var command = {};
+    Object.defineProperty(command, 'method', {
+        get: function() {return method;}
+    });
+    Object.defineProperty(command, 'uri', {
+        get: function() {return uri;}
+    });
+    Object.defineProperty(command, 'operator', {
+        get: function() {return operator;}
+    });
+    return command;
 };
 
 module.exports = Parser;

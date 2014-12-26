@@ -18,6 +18,19 @@ describe('Parser', function() {
             assert.equal(null, parser.next());
         });
 
+        it('should return read-only commands', function() {
+            var script = 'GET http://uri';
+            var parser = new Parser(script);
+            
+            var next = parser.next();
+            assert.equal(1, next.commands.length);
+            var command = next.commands[0];
+            command.method = 'POST';
+            assert.equal('GET', command.method);
+            command.uri = 'invalid';
+            assert.equal('http://uri', command.uri);
+        });
+
         it('should return no commands when none exist', function() {
             var script = '';
             var parser = new Parser(script);
