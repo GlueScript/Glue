@@ -22,18 +22,18 @@ Parser.prototype.next = function() {
         if (token.isMethod()) {
             return {commands: [nextCommand(token, this.tokenizer)]};
         } else if (token.isOperator()) {
-            if (token.value() == 'split') {
-                return {operator : token.value()}; 
-            } else if (token.value() == 'join') {
+            if (token.value == 'split') {
+                return {operator : token.value}; 
+            } else if (token.value == 'join') {
                 // if token.value is join then build a list of commands enclosed by ()s
-                if (this.tokenizer.next().value() != 'start-group') {
+                if (this.tokenizer.next().value != 'start-group') {
                     throw new Error('Invalid script. Start-group must follow join');
                 }
 
                 var commands = [], next;
 
                 while (next = this.tokenizer.next()) {
-                    if (next.isOperator() && (next.value() == 'end-group')) {
+                    if (next.isOperator() && (next.value == 'end-group')) {
                         return {commands: commands};
                     }
 
@@ -45,7 +45,7 @@ Parser.prototype.next = function() {
                 }
                 throw new Error('Invalid script. End-group must end a group of commands');
             } else {
-                throw new Error('Invalid script. Expected "split" or "join". Got "' + token.value() + '"');
+                throw new Error('Invalid script. Expected "split" or "join". Got "' + token.value + '"');
             }
 
         } else {
@@ -54,15 +54,18 @@ Parser.prototype.next = function() {
     }
 };
 
+/**
+ * method is a Token instance
+ */
 function nextCommand(method, tokenizer) {
     if (tokenizer.hasMore()) {
         var uri = tokenizer.next();
         // enforce rule that a method is followed by a uri
         if (uri.isUri()) {
             // return a command
-            return {method: method.value(), uri: uri.value()};
+            return {method: method.value, uri: uri.value};
         } else {
-            throw new Error('Invalid script. Expected a uri, got ' + uri.value());
+            throw new Error('Invalid script. Expected a uri, got ' + uri.value);
         }
     } else {
         throw new Error('Invalid script. Expected a uri, got nothing.');

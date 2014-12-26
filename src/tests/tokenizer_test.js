@@ -41,18 +41,18 @@ describe('Tokenizer', function() {
         it('should return tokens in order', function(){
             var script = 'GET http://uri POST http://service';
             var tokenizer = new Tokenizer(script);
-            assert.equal('GET', tokenizer.next().value());
-            assert.equal('http://uri', tokenizer.next().value());
-            assert.equal('POST', tokenizer.next().value());
-            assert.equal('http://service', tokenizer.next().value());
+            assert.equal('GET', tokenizer.next().value);
+            assert.equal('http://uri', tokenizer.next().value);
+            assert.equal('POST', tokenizer.next().value);
+            assert.equal('http://service', tokenizer.next().value);
         });
         it('should ignore all whitespace', function(){
             var script = 'GET http://uri   POST    http://service';
             var tokenizer = new Tokenizer(script);
-            assert.equal('GET', tokenizer.next().value());
-            assert.equal('http://uri', tokenizer.next().value());
-            assert.equal('POST', tokenizer.next().value());
-            assert.equal('http://service', tokenizer.next().value());
+            assert.equal('GET', tokenizer.next().value);
+            assert.equal('http://uri', tokenizer.next().value);
+            assert.equal('POST', tokenizer.next().value);
+            assert.equal('http://service', tokenizer.next().value);
         });
         it('should return undefined when no tokens exist', function(){
             var script = '';
