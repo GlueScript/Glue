@@ -1,6 +1,6 @@
 var request = require('request'),
     Payload = require('./payload')
-    ResponseBag = require('./response_bag'),
+    PayloadBag = require('./payload_bag'),
     _ = require('underscore');
 
 /**
@@ -40,7 +40,7 @@ Exe.prototype.next = function(payload) {
         } else {
             payload = _.isArray(payload) ? payload : [payload];
 
-            this.incoming = new ResponseBag(payload.length * next.commands.length);
+            this.incoming = new PayloadBag(payload.length * next.commands.length);
             // generate a request per item in payload for each command
             for (var p in payload) {
                 for (var c in next.commands) {

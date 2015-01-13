@@ -4,24 +4,24 @@ var Payload = require('./payload'),
 /**
  * Container for incoming responses 
  */
-function ResponseBag(size) {
+function PayloadBag(size) {
     this.size = size;
     this.contents = [];
 }
 
-ResponseBag.prototype.total = function() {
+PayloadBag.prototype.total = function() {
     return this.size;
 };
 
-ResponseBag.prototype.currentSize = function() {
+PayloadBag.prototype.currentSize = function() {
     return this.contents.length;
 };
 
-ResponseBag.prototype.full = function() {
+PayloadBag.prototype.full = function() {
     return this.contents.length == this.size;
 };
 
-ResponseBag.prototype.push = function(e, p) {
+PayloadBag.prototype.push = function(e, p) {
     this.contents.push(
         {
             error: e,
@@ -30,7 +30,7 @@ ResponseBag.prototype.push = function(e, p) {
     );
 };
 
-ResponseBag.prototype.errors = function() {
+PayloadBag.prototype.errors = function() {
     for (var res in this.contents) {
         if (this.contents[res].error) {
             return true;
@@ -45,7 +45,7 @@ ResponseBag.prototype.errors = function() {
  * If there is 1 response return that Payload
  * If there are 0 responses return a Payload with empty contents
  */
-ResponseBag.prototype.join = function() {
+PayloadBag.prototype.join = function() {
     if (this.contents.length == 0) {
         return new Payload('');
     } else if (this.contents.length == 1) {
@@ -64,4 +64,4 @@ ResponseBag.prototype.join = function() {
     }
 };
 
-module.exports = ResponseBag;
+module.exports = PayloadBag;
