@@ -23,6 +23,7 @@
   "devDependencies": {
     "should": "~4.3.0",
     "mocha": "~2.0.1",
-    "mockman": "*"
+    "mockman": "*",
+    "supertest": "~0.15.0"
   }
 }
