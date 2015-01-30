@@ -72,17 +72,32 @@ function nextCommand(method, tokenizer) {
     }
 };
 
+/**
+ * Convert to an all-purpose object factory
+ * Pass in an object param
+ * Return an object with the same properties that are not writable nor configurable
+ * createLockedObject(obj)
+ */
 function commandFactory(method, uri, operator) {
     
     var command = {};
     Object.defineProperty(command, 'method', {
-        get: function() {return method;}
+        writable: false,
+        configurable: false,
+        enumerable: true,
+        value: method
     });
     Object.defineProperty(command, 'uri', {
-        get: function() {return uri;}
+        writable: false,
+        configurable: false,
+        enumerable: true,
+        value: uri
     });
     Object.defineProperty(command, 'operator', {
-        get: function() {return operator;}
+        writable: false,
+        configurable: false,
+        enumerable: true,
+        value: operator
     });
     return command;
 };

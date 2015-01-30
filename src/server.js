@@ -7,12 +7,11 @@ var app = require('express')(),
     routes = require('./routes');
 
 // only expect text/* cotent types, in fact text/plain
+// extended to accept an array of scripts sent as json
 app.use(bodyParser.text({type : 'text/*', limit: '1024kb'}));
-// extended to accept an array of scripts
 
-exports.start = function(port){
+exports.start = function(){
     app.use('/', routes);
-    app.listen(port);
 };
 
 exports.app = app;
