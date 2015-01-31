@@ -93,6 +93,21 @@ describe('Parser', function() {
             assert.equal(null, parser.next());
         });
 
+        it('should handle pipe operator', function() {
+            var script = 'GET http://uri > POST http://service';
+            var parser = new Parser(script);
+
+            var command = parser.next().commands[0];
+            assert.equal('GET', command.method);
+            assert.equal('http://uri', command.uri);
+
+            command = parser.next().commands[0];
+            assert.equal('POST', command.method);
+            assert.equal('http://service', command.uri);
+
+            assert.equal(null, parser.next());
+        });
+
         it('should reject two methods in a row', function() {
             var script = 'GET POST http://service';
             var parser = new Parser(script);

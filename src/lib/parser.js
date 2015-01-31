@@ -12,7 +12,7 @@ function Parser(string) {
 /**
  * Return a command object with a method and uri property
  * Throw exception if script is invalid
- * Should be 'operator uri' or just '/'
+ * Should be 'method uri' or 'operator'
  */
 Parser.prototype.next = function() {
     if (this.tokenizer.hasMore()) {
@@ -24,6 +24,12 @@ Parser.prototype.next = function() {
         } else if (token.isOperator()) {
             if (token.value == 'split') {
                 return commandFactory(null, null, token.value);
+            } else if (token.value == 'pipe') {
+                // create command from next two tokens 
+                token = this.tokenizer.next();
+                if (token.isMethod()){
+                    return {commands: [nextCommand(token, this.tokenizer)]};
+                }
             } else if (token.value == 'join') {
                 // if token.value is join then build a list of commands enclosed by ()s
                 if (this.tokenizer.next().value != 'start-group') {
