@@ -2,7 +2,7 @@ var _ = require('underscore');
 
 /**
  * Token class encapsulates a script token 
- * @todo add isNull method? add a pipe | operator
+ * @todo add isNull method? 
  *
  * isUri - test if the token is a uri
  * isOperator - test if the token is a script operator, eg. / or + (split and join)
@@ -13,6 +13,7 @@ var _ = require('underscore');
 var operators = {
     '/' : 'split',
     '+' : 'join',
+    '>' : 'pipe',
     '(' : 'start-group',
     ')' : 'end-group'
 };

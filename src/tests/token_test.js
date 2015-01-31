@@ -9,6 +9,26 @@ describe('Token', function() {
             var token = new Token(value);
             assert(token.isOperator());
         });
+        it('should return true when token is join', function(){
+            var value = '+';
+            var token = new Token(value);
+            assert(token.isOperator());
+        });
+        it('should return true when token is pipe', function(){
+            var value = '>';
+            var token = new Token(value);
+            assert(token.isOperator());
+        });
+        it('should return true when token is start-group', function(){
+            var value = '(';
+            var token = new Token(value);
+            assert(token.isOperator());
+        });
+        it('should return true when token is end-group', function(){
+            var value = ')';
+            var token = new Token(value);
+            assert(token.isOperator());
+        });
         it('should return false when token is not recognised', function(){
             var value = '*';
             var token = new Token(value);
