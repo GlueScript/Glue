@@ -67,7 +67,7 @@ describe('server', function() {
             request(server.app)
                 .post('/')
                 .set('Content-Type', 'text/plain')
-                .send('GET ' + first + '/1' + ' POST ' + second + '/')
+                .send('GET ' + first + '/1' + ' > POST ' + second + '/')
                 .expect(200, done);
         });
     
@@ -88,7 +88,7 @@ describe('server', function() {
             request(server.app)
                 .post('/')
                 .set('Content-Type', 'text/plain')
-                .send('GET ' + first + '/1' + ' POST ' + second + '/')
+                .send('GET ' + first + '/1' + ' > POST ' + second + '/')
                 .expect(400, done);
         });
     
@@ -112,7 +112,7 @@ describe('server', function() {
             request(server.app)
                 .post('/')
                 .set('Content-Type', 'text/plain')
-                .send('GET ' + first + '/1' + ' POST ' + second + '/' + ' PUT ' + third)
+                .send('GET ' + first + '/1' + ' > POST ' + second + '/' + ' PUT ' + third)
                 .expect(400, done);
         });
     
