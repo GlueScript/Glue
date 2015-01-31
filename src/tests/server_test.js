@@ -91,5 +91,29 @@ describe('server', function() {
                 .send('GET ' + first + '/1' + ' POST ' + second + '/')
                 .expect(400, done);
         });
+    
+        it('stops processing a script on error', function(done) {
+            var first_response = {data: 'text'};
+            var first = 'http://testing';
+
+            var mock_first = nock(first)
+                .get('/1', '')
+                .reply(200, first_response);
+
+            var second = 'http://second';
+
+            var mock_second = nock(second)
+                .post('/', first_response)
+                .reply(500);
+            
+            // don't mock this, it will not be called
+            var third = 'http://third/';
+
+            request(server.app)
+                .post('/')
+                .set('Content-Type', 'text/plain')
+                .send('GET ' + first + '/1' + ' POST ' + second + '/' + ' PUT ' + third)
+                .expect(400, done);
+        });
     });
 });
