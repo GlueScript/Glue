@@ -87,18 +87,21 @@ function commandFactory(method, uri, operator) {
         enumerable: true,
         value: method
     });
+
     Object.defineProperty(command, 'uri', {
         writable: false,
         configurable: false,
         enumerable: true,
         value: uri
     });
+
     Object.defineProperty(command, 'operator', {
         writable: false,
         configurable: false,
         enumerable: true,
         value: operator
     });
+
     return command;
 };
 

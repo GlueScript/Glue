@@ -30,11 +30,18 @@ function Token(value) {
         value = null;
     }
 
-    Object.defineProperty(this, "value",{
-        get: function () { return value; }
+    Object.defineProperty(this, 'value', {
+        writable: false,
+        configurable: false,
+        enumerable: true,
+        value: value
     });
-    Object.defineProperty(this, "type",{
-        get: function () { return type; }
+
+    Object.defineProperty(this, 'type', {
+        writable: false,
+        configurable: false,
+        enumerable: true,
+        value: type
     });
 }
 
