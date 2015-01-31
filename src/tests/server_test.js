@@ -70,5 +70,26 @@ describe('server', function() {
                 .send('GET ' + first + '/1' + ' POST ' + second + '/')
                 .expect(200, done);
         });
+    
+        it('fails when one request fails', function(done) {
+            var first_response = {data: 'text'};
+            var first = 'http://testing';
+
+            var mock_first = nock(first)
+                .get('/1', '')
+                .reply(200, first_response);
+
+            var second = 'http://second';
+
+            var mock_second = nock(second)
+                .post('/', first_response)
+                .reply(404);
+
+            request(server.app)
+                .post('/')
+                .set('Content-Type', 'text/plain')
+                .send('GET ' + first + '/1' + ' POST ' + second + '/')
+                .expect(400, done);
+        });
     });
 });

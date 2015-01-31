@@ -67,7 +67,7 @@ Exe.prototype.request = function(command, payload) {
         } else {
             // receive success and failure the same so that we complete all pending requests
             console.log('Error');
-            exe.receive(error, new Payload(response_body));
+            exe.receive(error || 'Error ' + response.statusCode, new Payload(response_body));
         }
     });
 };
@@ -89,7 +89,7 @@ Exe.prototype.receive = function(error, payload) {
 
 Exe.prototype.end = function(error, result) {
     var end = new Date().getTime();
-    console.log('End');
+    console.log('End ');
     console.log('Execution took: ' + (end - this.start) + ' ms');
     // return the result as a string
     this.callback(error, result);
