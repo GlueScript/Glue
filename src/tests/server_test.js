@@ -115,5 +115,30 @@ describe('server', function() {
                 .send('GET ' + first + '/1' + ' POST ' + second + '/' + ' PUT ' + third)
                 .expect(400, done);
         });
+    
+        it('splits requests', function(done) {
+            var first_response = [{data: 'text'}, {data: 'other'}];
+            var first = 'http://testing';
+
+            var mock_first = nock(first)
+                .get('/1', '')
+                .reply(200, first_response);
+
+            var second = 'http://second';
+
+            var mock_second = nock(second)
+                .post('/', {data: 'text'})
+                .reply(200, 'result');
+
+            var mock_third = nock(second)
+                .post('/', {data: 'other'})
+                .reply(200, 'result');
+
+            request(server.app)
+                .post('/')
+                .set('Content-Type', 'text/plain')
+                .send('GET ' + first + '/1 / ' + ' POST ' + second + '/')
+                .expect(200, done);
+        });
     });
 });
