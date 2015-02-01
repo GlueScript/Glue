@@ -29,14 +29,14 @@ This script makes a GET request to http://resource.net/ and responds with the re
 Chaining responses to a request
 ================================
 
-    GET http://resource.net/ POST http://words/
+    GET http://resource.net/ > POST http://words/
     
 A GET request is made to http://resource.net/ when that request responds with success, a POST request with the response body is made to http://words/ . The response from the glue server is the response from the final request in the script.
 
 Longer chains
 ===========
 
-    GET http://resource.net/ POST http://words/ POST http://to-upper/
+    GET http://resource.net/ > POST http://words/ > POST http://to-upper/
 
 Script can chain multiple endpoints together. They can use any HTTP verb that the endpoint supports.
 
@@ -48,9 +48,9 @@ Splitting payloads
 Glue scripts can split a payload that is a json array into individual requests using the / operator. Putting separate request on different lines helps readability.
 
     GET http://resource.net/ 
-        POST http://words/ 
+        > POST http://words/ 
         / POST http://to-upper/ 
-        POST http://sort/
+        > POST http://sort/
 
 When the words service responds with ["dog", "house", "countryside", "dividend"] then 4 requests are made to the to-upper server each containing a single item from the array. Script execution waits for all requests to complete before continuing. 
 The to-upper service responds to a request "dog" with "DOG". The glue server joins all the responses into an array so that the request made to the sort service contains ["DOG", "HOUSE", "COUNTRYSIDE", "DIVIDEND"]. 
@@ -66,7 +66,7 @@ Glue scripts can join the responses of 2 or more endpoints into a single payload
         POST http://dom/?xpath=//a/@href
         POST http://dom/?xpath=//img/@src
     )
-    POST http://metadata/
+    > POST http://metadata/
     
 The html document from resource.net is POSTed to both http://dom/?xpath=//a/@href and http://dom/?xpath=//img/@src in parallel and the responses from these services are combined into one array which is POSTed to the metadata service.
     
