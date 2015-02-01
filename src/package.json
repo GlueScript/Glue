@@ -1,7 +1,7 @@
 {
   "name": "Glue",
-  "version": "0.6.0",
-  "description": "Provides scripting for services",
+  "version": "0.7.0",
+  "description": "Runs HTTP scripts",
   "main": "index.js",
   "repository": {
     "url": "git@github.com:timothy-r/Glue.git",
