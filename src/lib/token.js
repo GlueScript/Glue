@@ -2,13 +2,14 @@ var _ = require('underscore');
 
 /**
  * Token class encapsulates a script token 
- * @todo add isNull method? 
  *
  * isUri - test if the token is a uri
  * isOperator - test if the token is a script operator, eg. / or + (split and join)
  * isMethod - test if the token is a script method, eg. POST
- * value - return the value of the token
- * type - return the type of the token
+ * isEmpty - test if value is empty or not
+ *
+ * value - the value of the token
+ * type - the type of the token
  */
 var operators = {
     '/' : 'split',
@@ -27,8 +28,6 @@ function Token(value) {
         type = 'method';
     } else if (value.match(/^[a-zA-Z]+:\/\/.+/)) {
         type = 'uri';
-    } else {
-        value = null;
     }
 
     Object.defineProperty(this, 'value', {
@@ -67,6 +66,10 @@ Token.prototype.isMethod = function() {
  */
 Token.prototype.isUri = function() {
     return this.type === 'uri';
+};
+
+Token.prototype.isEmpty = function() {
+    return _.isEmpty(this.value);
 };
 
 module.exports = Token;
