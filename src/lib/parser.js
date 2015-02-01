@@ -1,13 +1,12 @@
-var Tokenizer = require('./tokenizer'),
-    _ = require('underscore'),
+var _ = require('underscore'),
     Obj = require('./obj');
 
 /**
  * Parser implements generating a set of commands from a script
  * It validates the script syntax is correct
  */
-function Parser(string) {
-    this.tokenizer = new Tokenizer(string);
+function Parser(tokenizer) {
+    this.tokenizer = tokenizer;
 };
 
 /**
@@ -52,7 +51,7 @@ Parser.prototype.next = function() {
                 }
                 throw new Error('Invalid script. "end-group" must end a group of commands');
             } else {
-                throw new Error('Invalid script. Expected "split" or "join". Got "' + token.value + '"');
+                throw new Error('Invalid script. Expected "split", "pipe" or "join". Got "' + token.value + '"');
             }
 
         } else {

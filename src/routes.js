@@ -1,4 +1,5 @@
 var express = require('express'),
+    Tokenizer = require('./lib/tokenizer'),
     Parser = require('./lib/parser'),
     Exe = require('./lib/exe');
 
@@ -15,7 +16,7 @@ module.exports = (function() {
 
     routes.post('/', function(req, res) {
         // accept a script in the body of the request
-        var exe = new Exe(new Parser(req.body));
+        var exe = new Exe(new Parser(new Tokenizer(req.body)));
         exe.start(function(err, result) {
             // if error is set return a 400 response with result.content
             // result will be a Payload, use it's type to set content-type of response
