@@ -74,5 +74,14 @@ describe('Tokenizer', function() {
             assert.equal('{', tokenizer.peek().value);
             assert.equal('{', tokenizer.peek().value);
         });
+        it('should always return the current token', function() {
+            var script = '{ "name": "dave" } > POST http://user-data-service/';
+            var tokenizer = new Tokenizer(script);
+            assert.equal('{', tokenizer.peek().value);
+            tokenizer.next();
+            assert.equal('"name":', tokenizer.peek().value);
+            tokenizer.next();
+            assert.equal('"dave"', tokenizer.peek().value);
+        });
     });
 });
