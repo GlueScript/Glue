@@ -1,5 +1,7 @@
 var DOMParser = require('xmldom').DOMParser,
-    _ = require('underscore');
+    _ = require('underscore'),
+    ContentType = require('./content_type');
+
 _.str = require('underscore.string');
 
 /*
@@ -12,7 +14,7 @@ function Payload(content, type) {
     if (_.isArray(content)) {
         var real = [];
         for (var item in content) {
-            if (isJSON(content[item])) {
+            if (ContentType.isJSON(content[item])) {
                 real.push(JSON.parse(content[item]));
             } else {
                 real.push(content[item]);
@@ -24,10 +26,10 @@ function Payload(content, type) {
         content = JSON.stringify(content);
         default_type = 'application/json';
     } else {
-        if (isJSON(content)) {
+        if (ContentType.isJSON(content)) {
             default_type = 'application/json';
         } else {
-            default_type = getContentType(content);
+            default_type = ContentType.detect(content);
         }
     }
     
@@ -61,7 +63,7 @@ function Payload(content, type) {
 
 Payload.prototype.split = function() {
     var items = [];
-    if (isJSON(this.content)) {
+    if (ContentType.isJSON(this.content)) {
         var json = JSON.parse(this.content);
         if (_.isArray(json)) {
             for(var item in json) {
@@ -75,39 +77,5 @@ Payload.prototype.split = function() {
     }
     return items;
 };
-
-function isJSON(content) {
-    try {
-        JSON.parse(content);
-        return true; 
-    } catch (e) {
-        return false;
-    }
-}
-
-function getContentType(content) {
-    try {
-        // pass in stub error callbacks to suppress error logging
-        var doc = new DOMParser({
-            locator: {},
-            errorHandler: {
-                error: function() {},
-                fatalError: function() {}
-            }
-        }).parseFromString(content);
-
-        var documentElement = (doc ? doc.ownerDocument || doc : 0).documentElement;
-        if (documentElement) {
-            var name = documentElement.nodeName.toLowerCase();
-            if ('html' === name) {
-                return 'text/html';
-            } else {
-                return 'application/xml';
-            }
-        }
-    } catch (e) {
-    }
-    return 'text/plain';
-}
 
 module.exports = Payload;
