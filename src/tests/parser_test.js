@@ -267,5 +267,14 @@ describe('Parser', function() {
             assert.equal('POST', commands[1].method);
             assert.equal('http://e', commands[1].uri);
         });
+
+        it('should handle payload content in scripts', function() {
+            var script = '{ "name" : "Freddy" } > POST http://account.service/';
+            var parser = new Parser(new Tokenizer(script));
+            var next = parser.next();
+
+            assert.equal('application/json', next.payload.type);
+            assert.equal("Freddy", next.payload.value.name);
+        });
     });
 });

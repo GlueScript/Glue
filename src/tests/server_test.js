@@ -140,5 +140,20 @@ describe('server', function() {
                 .send('GET ' + first + '/1 / ' + ' POST ' + second + '/')
                 .expect(200, done);
         });
+
+        it('sends payload to next endpoint', function(done) {
+            var payload = JSON.stringify({name : "Zebedee"});
+            var endpoint = 'http://accounts.net';
+
+            var mock = nock(endpoint)
+                .post('/', payload)
+                .reply(200, 'result');
+
+            request(server.app)
+                .post('/')
+                .set('Content-Type', 'text/plain')
+                .send(payload + ' > POST ' + endpoint + '/')
+                .expect(200, done);
+        });
     });
 });

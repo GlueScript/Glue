@@ -1,5 +1,7 @@
 var _ = require('underscore'),
-    Obj = require('./obj');
+    Obj = require('./obj'),
+    ContentType = require('./content_type'),
+    Payload = require('./payload');
 
 /**
  * Parser implements generating a set of commands from a script
@@ -53,9 +55,16 @@ Parser.prototype.next = function() {
             } else {
                 throw new Error('Invalid script. Expected "split", "pipe" or "join". Got "' + token.value + '"');
             }
-
+        } else if (!token.isEmpty() && !token.isUri()) {
+            var content = token.value;
+            // attempt to read payload content from the script
+            // keep reading tokens until the next operator
+            while(!this.tokenizer.peek().isOperator()){
+                content += this.tokenizer.next().value;
+            }
+            return Obj.lock({method: null, uri: null, operator: null, payload: new Payload(content, ContentType.detect(content))});
         } else {
-            throw new Error('Invalid script. Expected "method" or "operator"');
+            throw new Error('Invalid script. Expected "method", "payload" or "operator"');
         }
     }
 };

@@ -33,7 +33,9 @@ Exe.prototype.next = function(payload) {
     var next = this.parser.next();
 
     if (next) {
-        if (next.operator == 'split') {
+        if (next.payload) {
+            this.next(next.payload);
+        } else if (next.operator == 'split') {
             // split body, expect json array
             // caution - payload might be an array if split appears twice in the script...
             this.next(payload.split());
@@ -57,7 +59,6 @@ Exe.prototype.request = function(command, payload) {
     var exe = this;
     command['body'] = payload.content;
     command['headers'] = {'content-type': payload.type};
-
     console.log('request : ' + command.method + ' ' + command.uri + ' : ' + payload.type + ' ' + exe.incoming.total());
 
     request(command, function(error, response, response_body) {
