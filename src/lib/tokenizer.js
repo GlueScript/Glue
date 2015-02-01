@@ -22,4 +22,13 @@ Tokenizer.prototype.next = function() {
     } 
 };
 
+/**
+ * return the next token but do not move the cursor forwards
+ */
+Tokenizer.prototype.peek = function() {
+    if (this.hasMore()) {
+         return new Token(this.tokens[this.index]);
+    } 
+};
+
 module.exports = Tokenizer;

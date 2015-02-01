@@ -37,6 +37,7 @@ describe('Tokenizer', function() {
             assert.equal(false, tokenizer.hasMore());
         });
     });
+
     describe('next', function() {
         it('should return tokens in order', function(){
             var script = 'GET http://uri POST http://service';
@@ -58,6 +59,20 @@ describe('Tokenizer', function() {
             var script = '';
             var tokenizer = new Tokenizer(script);
             assert.equal(undefined, tokenizer.next());
+        });
+    });
+
+    describe('peek', function() {
+        it('should return the next token', function() {
+            var script = '{ "name": "dave" } > POST http://user-data-service/';
+            var tokenizer = new Tokenizer(script);
+            assert.equal('{', tokenizer.peek().value);
+        });
+        it('should not remove tokens', function() {
+            var script = '{ "name": "dave" } > POST http://user-data-service/';
+            var tokenizer = new Tokenizer(script);
+            assert.equal('{', tokenizer.peek().value);
+            assert.equal('{', tokenizer.peek().value);
         });
     });
 });
