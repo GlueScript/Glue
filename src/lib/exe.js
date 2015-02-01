@@ -20,7 +20,7 @@ function Exe(parser) {
  */
 Exe.prototype.start = function(callback) {
     this.callback = callback;
-    logger.log('info','Start');
+    logger.log('info', 'Start');
     this.start = new Date().getTime();
     this.next(new Payload(''));
 };
@@ -63,12 +63,12 @@ Exe.prototype.request = function(command, payload) {
     logger.log('info', 'request : ' + command.method + ' ' + command.uri + ' : ' + payload.type + ' ' + exe.incoming.total());
 
     request(command, function(error, response, response_body) {
+        // receive success and failure the same so that we complete all pending requests
         if (!error && response.statusCode == 200) {
-            logger.log('info','Success: ' + command.uri + " " + response.headers['content-type']);
+            logger.log('info', 'Success: ' + command.uri + " " + response.headers['content-type']);
             exe.receive(null, new Payload(response_body, response.headers['content-type']));
         } else {
-            // receive success and failure the same so that we complete all pending requests
-            logger.log('info','Error');
+            logger.log('error', 'Error: ' + command.uri);
             exe.receive(error || 'Error ' + response.statusCode, new Payload(response_body));
         }
     });
@@ -91,8 +91,8 @@ Exe.prototype.receive = function(error, payload) {
 
 Exe.prototype.end = function(error, result) {
     var end = new Date().getTime();
-    logger.log('info','End ');
-    logger.log('info','Execution took: ' + (end - this.start) + ' ms');
+    logger.log('info', 'End ');
+    logger.log('info', 'Execution took: ' + (end - this.start) + ' ms');
     // return the result as a string
     this.callback(error, result);
 };
