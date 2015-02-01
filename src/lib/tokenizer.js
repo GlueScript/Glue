@@ -5,30 +5,31 @@ var Token = require('./token.js');
  * split on whitespace and carriage returns
  */
 function Tokenizer(string) {
-    this.tokens = string.match(/\S+/g) || [];
-    this.index = 0;
+    var tokens = string.match(/\S+/g) || [];
+    var index = 0;
+    var that = this;
+
+    /**
+    * test if there are any more tokens
+    */
+    this.hasMore = function() {
+        return (index < tokens.length);
+    }
+
+    this.next = function() {
+        if (that.hasMore()) {
+         return new Token(tokens[index++]);
+        } 
+    }
+
+    /**
+    * return the next token but do not move the cursor forwards
+    */
+    this.peek = function() {
+        if (that.hasMore()) {
+            return new Token(tokens[index]);
+        } 
+    }
 }
-
-/**
-* test if there are any more tokens
-*/
-Tokenizer.prototype.hasMore = function() {
-    return (this.index < this.tokens.length);
-};
-
-Tokenizer.prototype.next = function() {
-    if (this.hasMore()) {
-         return new Token(this.tokens[this.index++]);
-    } 
-};
-
-/**
- * return the next token but do not move the cursor forwards
- */
-Tokenizer.prototype.peek = function() {
-    if (this.hasMore()) {
-         return new Token(this.tokens[this.index]);
-    } 
-};
 
 module.exports = Tokenizer;
