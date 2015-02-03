@@ -29,6 +29,7 @@ Exe.prototype.start = function(callback) {
  */
 Exe.prototype.next = function(payload) {
     var next = this.parser.next();
+    var that = this;
     if (next) {
         if (next.payload) {
             this.next(next.payload);
@@ -37,35 +38,16 @@ Exe.prototype.next = function(payload) {
             // caution - payload might be an array if split appears twice in the script...
             this.next(payload.split());
         } else {
-            payload = _.isArray(payload) ? payload : [payload];
-            var that = this;
-            var incoming = new PayloadBag();
-
-            // generate a request per item in payload for each command
-            async.each(makeRequests(next.commands, payload), function(command, cb){
-                logger.log('info', command.method + ' ' + command.uri);
-                request(command, function(error, response, response_body) {
-                    if (!error && response.statusCode == 200) {
-                        logger.log('info', 'Success: ' + command.uri + " " + response.headers['content-type']);
-                        incoming.push(null, new Payload(response_body, response.headers['content-type']));
-                    } else {
-                        logger.log('error', 'Error: ' + command.uri);
-                        incoming.push(error || 'Error ' + response.statusCode, new Payload(response_body));
-                    }
-                    // don't call callback with an error, deal with any response errors when all have completed
-                    cb();
-                });
-            }, function(err) {
-                // continue to next command
-                if (!incoming.errors()) { 
-                    that.next(incoming.join());
+            fire(next, payload, function(err, result) {
+                if (err) {
+                    that.end(err, result);
                 } else {
-                    // stop script execution
-                    that.end('Error', incoming.join());
-                }
+                    that.next(result);
+               }
             });
         }
     } else {
+        // no more commands to process
         this.end(null, payload);
     }
 };
@@ -90,6 +72,36 @@ function makeRequests(commands, payloads) {
         });
     });
     return cmds;
+}
+
+/**
+ * fire off 1+ requests, when they have all completed combine the responses and execute callback
+ */
+function fire(cmd, payload, callback) {
+    payload = _.isArray(payload) ? payload : [payload];
+    var incoming = new PayloadBag();
+
+    // generate a request per item in payload for each command
+    async.each(makeRequests(cmd.commands, payload), function(command, cb){
+        logger.log('info', command.method + ' ' + command.uri);
+        request(command, function(error, response, response_body) {
+            if (!error && response.statusCode == 200) {
+                logger.log('info', 'Success: ' + command.uri + " " + response.headers['content-type']);
+                incoming.push(null, new Payload(response_body, response.headers['content-type']));
+            } else {
+                logger.log('error', 'Error: ' + command.uri);
+                incoming.push(error || 'Error ' + response.statusCode, new Payload(response_body));
+            }
+            // don't call callback with an error, deal with any response errors when all have completed
+            cb();
+        });
+    }, function(err) {
+        if (!incoming.errors()) { 
+            callback(null, incoming.join());
+        } else {
+            callback('Error', incoming.join());
+        }
+    });
 }
 
 module.exports = Exe;
