@@ -45,6 +45,8 @@ Exe.prototype.next = function(payload) {
 
             this.incoming = new PayloadBag(payload.length * next.commands.length);
             // generate a request per item in payload for each command
+            // ought to clone these objects ?
+            // use async here
             for (var p in payload) {
                 for (var c in next.commands) {
                     this.request(next.commands[c], payload[p]);
