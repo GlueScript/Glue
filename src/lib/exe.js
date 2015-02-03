@@ -43,7 +43,7 @@ Exe.prototype.next = function(payload) {
 
             // generate a request per item in payload for each command
             async.each(makeRequests(next.commands, payload), function(command, cb){
-                logger.log('info', command);
+                logger.log('info', command.method + ' ' + command.uri);
                 request(command, function(error, response, response_body) {
                     if (!error && response.statusCode == 200) {
                         logger.log('info', 'Success: ' + command.uri + " " + response.headers['content-type']);
@@ -84,7 +84,7 @@ function makeRequests(commands, payloads) {
         _.each(commands, function(command) {
             var cmd = _.clone(command);
             // if cmd.method == 'GET' then don't set a request body
-            cmd.body = payload.content;
+            cmd.body = cmd.method != 'GET' ? payload.content : '';
             cmd.headers = {'content-type': payload.type};
             cmds.push(cmd); 
         });
