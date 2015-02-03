@@ -23,21 +23,13 @@ function PayloadBag(size) {
     };
 
     this.push = function(e, p) {
-        contents.push(
-            {
-                error: e,
-                payload: p
-            }
-        );
+        contents.push({error: e, payload: p});
     };
 
     this.errors = function() {
-        for (var res in contents) {
-            if (contents[res].error) {
-                return true;
-            }
-        }
-        return false;
+        return _.some(contents, function(content) { 
+            return content.error; 
+        });
     };
 
     /**

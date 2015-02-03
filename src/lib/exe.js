@@ -2,14 +2,12 @@ var request = require('request'),
     Payload = require('./payload')
     PayloadBag = require('./payload_bag'),
     _ = require('underscore'),
-    logger = require('./logger');
+    logger = require('./logger'),
+    async = require('async');
 
 /**
- * Executes an array of Command objects
+ * Executes an array of Command objects gotten in order from Parser
  * Passes the response from each command into the next command
- *
- * parser provides commands in order to be executed
- * callback used when the execution of the commands is completed
 */
 function Exe(parser) {
     this.parser = parser;
@@ -19,8 +17,8 @@ function Exe(parser) {
  * Start running the commands from the script
  */
 Exe.prototype.start = function(callback) {
-    this.callback = callback;
     logger.log('info', 'Start');
+    this.callback = callback;
     this.start = new Date().getTime();
     this.next(new Payload(''));
 };
@@ -30,9 +28,7 @@ Exe.prototype.start = function(callback) {
  * not all the previous response headers. 
  */
 Exe.prototype.next = function(payload) {
-
     var next = this.parser.next();
-
     if (next) {
         if (next.payload) {
             this.next(next.payload);
@@ -42,61 +38,58 @@ Exe.prototype.next = function(payload) {
             this.next(payload.split());
         } else {
             payload = _.isArray(payload) ? payload : [payload];
+            var that = this;
+            var incoming = new PayloadBag(payload.length * next.commands.length);
 
-            this.incoming = new PayloadBag(payload.length * next.commands.length);
             // generate a request per item in payload for each command
-            // ought to clone these objects ?
-            // use async here
-            for (var p in payload) {
-                for (var c in next.commands) {
-                    this.request(next.commands[c], payload[p]);
+            async.each(makeRequests(next.commands, payload), function(command, cb){
+                logger.log('info', command);
+                request(command, function(error, response, response_body) {
+                    if (!error && response.statusCode == 200) {
+                        logger.log('info', 'Success: ' + command.uri + " " + response.headers['content-type']);
+                        incoming.push(null, new Payload(response_body, response.headers['content-type']));
+                    } else {
+                        logger.log('error', 'Error: ' + command.uri);
+                        incoming.push(error || 'Error ' + response.statusCode, new Payload(response_body));
+                    }
+                    // don't call callback with an error, deal with any response errors when all have completed
+                    cb();
+                });
+            }, function(err) {
+                // continue to next command
+                if (!incoming.errors()) { 
+                    that.next(incoming.join());
+                } else {
+                    // stop script execution
+                    that.end('Error', incoming.join());
                 }
-            }
+            });
         }
     } else {
         this.end(null, payload);
     }
 };
 
-Exe.prototype.request = function(command, payload) {
-    var exe = this;
-    command['body'] = payload.content;
-    command['headers'] = {'content-type': payload.type};
-    logger.log('info', 'request : ' + command.method + ' ' + command.uri + ' : ' + payload.type + ' ' + exe.incoming.total());
-
-    request(command, function(error, response, response_body) {
-        // receive success and failure the same so that we complete all pending requests
-        if (!error && response.statusCode == 200) {
-            logger.log('info', 'Success: ' + command.uri + " " + response.headers['content-type']);
-            exe.receive(null, new Payload(response_body, response.headers['content-type']));
-        } else {
-            logger.log('error', 'Error: ' + command.uri);
-            exe.receive(error || 'Error ' + response.statusCode, new Payload(response_body));
-        }
-    });
-};
-
-/*
- * Callback from each request - pass this to the request() method directly
-*/
-Exe.prototype.receive = function(error, payload) {
-    this.incoming.push(error, payload);
-    if (this.incoming.full()) {
-        if (!this.incoming.errors()) { 
-            this.next(this.incoming.join());
-        } else {
-            // send a Payload to end() function
-            this.end('Error', this.incoming.join());
-        }
-    }
-}
-
 Exe.prototype.end = function(error, result) {
-    var end = new Date().getTime();
-    logger.log('info', 'End ');
-    logger.log('info', 'Execution took: ' + (end - this.start) + ' ms');
-    // return the result as a string
+    logger.log('info', 'End. Execution took: ' + (new Date().getTime() - this.start) + ' ms');
     this.callback(error, result);
 };
+
+/**
+ * Return an array of objects combining the commands properties and the payloads properties
+ */
+function makeRequests(commands, payloads) {
+    var cmds = [];
+    _.each(payloads, function(payload) {
+        _.each(commands, function(command) {
+            var cmd = _.clone(command);
+            // if cmd.method == 'GET' then don't set a request body
+            cmd.body = payload.content;
+            cmd.headers = {'content-type': payload.type};
+            cmds.push(cmd); 
+        });
+    });
+    return cmds;
+}
 
 module.exports = Exe;
