@@ -39,7 +39,7 @@ Exe.prototype.next = function(payload) {
         } else {
             payload = _.isArray(payload) ? payload : [payload];
             var that = this;
-            var incoming = new PayloadBag(payload.length * next.commands.length);
+            var incoming = new PayloadBag();
 
             // generate a request per item in payload for each command
             async.each(makeRequests(next.commands, payload), function(command, cb){
