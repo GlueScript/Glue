@@ -38,7 +38,8 @@ Exe.prototype.next = function(payload) {
             // caution - payload might be an array if split appears twice in the script...
             this.next(payload.split());
         } else {
-            fire(next, payload, function(err, result) {
+            payload = _.isArray(payload) ? payload : [payload];
+            fire(makeRequests(next.commands, payload), function(err, result) {
                 if (err) {
                     that.end(err, result);
                 } else {
@@ -77,12 +78,11 @@ function makeRequests(commands, payloads) {
 /**
  * fire off 1+ requests, when they have all completed combine the responses and execute callback
  */
-function fire(cmd, payload, callback) {
-    payload = _.isArray(payload) ? payload : [payload];
+function fire(commands, callback) {
     var incoming = new PayloadBag();
 
     // generate a request per item in payload for each command
-    async.each(makeRequests(cmd.commands, payload), function(command, cb){
+    async.each(commands, function(command, cb){
         logger.log('info', command.method + ' ' + command.uri);
         request(command, function(error, response, response_body) {
             if (!error && response.statusCode == 200) {
