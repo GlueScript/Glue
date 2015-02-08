@@ -1,7 +1,10 @@
 var express = require('express'),
     Tokenizer = require('./lib/tokenizer'),
     Parser = require('./lib/parser'),
-    Exe = require('./lib/exe');
+    Exe = require('./lib/exe'),
+    Store = require('./lib/store'),
+    Config = require('./config');
+
 
 module.exports = (function() {
     'use strict';
@@ -15,8 +18,13 @@ module.exports = (function() {
     });
 
     routes.post('/', function(req, res) {
+        var store = new Store(
+            'mongodb://' + Config.mongo_host + '/' + Config.mongo_db,
+            'executions'
+        );
+
         // accept a script in the body of the request
-        var exe = new Exe(new Parser(new Tokenizer(req.body)));
+        var exe = new Exe(store, new Parser(new Tokenizer(req.body)));
         exe.start(function(err, result) {
             // if error is set return a 400 response with result.content
             // result will be a Payload, use it's type to set content-type of response
