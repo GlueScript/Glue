@@ -20,7 +20,7 @@ module.exports = (function() {
     routes.post('/', function(req, res) {
         var store = new Store(
             'mongodb://' + Config.mongo_host + '/' + Config.mongo_db,
-            'executions'
+            Config.mongo_collection
         );
 
         // accept a script in the body of the request
