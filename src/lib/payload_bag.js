@@ -7,7 +7,6 @@ var Payload = require('./payload'),
 function PayloadBag() {
     // declare private vars
     var contents = [];
-    var that = this;
 
     this.push = function(e, p) {
         contents.push({error: e, payload: p});
