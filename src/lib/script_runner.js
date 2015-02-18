@@ -4,5 +4,14 @@
  */
 
 function ScriptRunner() {
+    
+};
+
+/**
+ * Is this the best function name?
+ */
+ScriptRunner.prototype.newScript = function(script) {
 
 };
+
+module.exports = ScriptRunner;

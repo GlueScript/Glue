@@ -4,9 +4,11 @@ var ScriptRunner = require('../lib/script_runner'),
 
 describe('ScriptRunner', function() {
     
-    describe('start', function() {
-        it('should create a new Exe instance', function() {
-
+    describe('newScript', function() {
+        it('should create a unique id', function() {
+            var script = 'GET https://xyz.net';
+            var runner = new ScriptRunner();
+            var id = runner.newScript(script);
         });
     });
 });
