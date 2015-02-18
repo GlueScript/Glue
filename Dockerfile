@@ -1,5 +1,6 @@
 FROM ubuntu:latest
-MAINTAINER Tim Rodger
+
+MAINTAINER Tim Rodger <tim.rodger@gmail.com>
 
 # Install dependencies
 RUN apt-get update -qq && \
