@@ -9,8 +9,7 @@ var request = require('request'),
  * Executes an array of Command objects gotten in order from Parser
  * Passes the response from each command into the next command
 */
-function Exe(store, parser) {
-    this.store = store;
+function Exe(parser) {
     this.parser = parser;
 };
 

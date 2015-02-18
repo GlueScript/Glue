@@ -24,7 +24,7 @@ module.exports = (function() {
         );
 
         // accept a script in the body of the request
-        var exe = new Exe(store, new Parser(new Tokenizer(req.body)));
+        var exe = new Exe(new Parser(new Tokenizer(req.body)));
         exe.start(function(err, result) {
             // if error is set return a 400 response with result.content
             // result will be a Payload, use it's type to set content-type of response
