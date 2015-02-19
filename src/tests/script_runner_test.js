@@ -4,12 +4,18 @@ var ScriptRunner = require('../lib/script_runner'),
     _ = require('underscore');
 
 describe('ScriptRunner', function() {
+
+    after(function(done){
+        mockman.close();
+        done();
+    });
     
-    describe('newScript', function() {
+    describe('generate', function() {
         it('should create a unique id', function() {
+            var mock_store_builder = mockman.instance('../lib/store').shouldReceive('add').once().willReturn(null);
             var script = 'GET https://xyz.net';
-            var runner = new ScriptRunner();
-            var id = runner.newScript(script);
+            var runner = new ScriptRunner(mock_store_builder.getMock()());
+            var id = runner.generate(script);
             // assert id is not null
             assert(_.isString(id));
         });
