@@ -11,12 +11,16 @@ describe('ScriptBuilder', function() {
     });
     
     describe('generate', function() {
-        it('should create a unique id', function() {
-            var mock_store_builder = mockman.instance('../lib/store').shouldReceive('add').once().willReturn(null);
+        it('should create a Script', function() {
+            // need to mock Store
+            //var mock_store_builder = mockman.instance('../lib/store').shouldReceive('add').once().willReturn(null);
             var script = 'GET https://xyz.net';
-            var id = ScriptBuilder.generate(script);
-            // assert id is not null
-            assert(_.isString(id));
+            var new_script = ScriptBuilder.generate(script);
+
+            assert(_.isString(new_script.id));
+            assert(script == new_script.body);
+            assert(0 == new_script.state);
+            assert(_.isDate(new_script.date));
         });
     });
 });

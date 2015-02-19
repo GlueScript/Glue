@@ -18,20 +18,21 @@ var store = new Store(
 /**
  * set a raw script string to be run
  */
-var generate = function(script) {
+var generate = function(body) {
     // generate an id for script
-    var id = uniqid();
+    var script = { body: body, date: new Date(), state: 0, id: uniqid()};
+
     // store script along with the date/time 
     // new to store the state somehow
-    store.add(id, {body: script, date: new Date(), state: 0, id: id}, function(err, doc) {
+    store.add(script.id, script, function(err, doc) {
         if (!err){
-            //that.script = doc.script;
+            console.log('Script Builder generate success: ' + JSON.stringify(doc));
         } else {
-            console.log('Script Builder db error ' + err);
+            console.log('Script Builder generate error: ' + err);
         }
     });
         
-    return id;
+    return script;
 };
 
 /**
