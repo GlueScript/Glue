@@ -9,14 +9,14 @@ var request = require('request'),
  * Executes an array of Command objects gotten in order from Parser
  * Passes the response from each command into the next command
 */
-function Exe(parser) {
+function Executor(parser) {
     this.parser = parser;
 };
 
 /**
  * Start running the commands from the script
  */
-Exe.prototype.start = function(callback) {
+Executor.prototype.start = function(callback) {
     logger.log('info', 'Start');
     this.callback = callback;
     this.start = new Date().getTime();
@@ -27,7 +27,7 @@ Exe.prototype.start = function(callback) {
  * We just want the content-type / mime-type of the body string
  * not all the previous response headers. 
  */
-Exe.prototype.next = function(payload) {
+Executor.prototype.next = function(payload) {
     var next = this.parser.next();
     var that = this;
     if (next) {
@@ -53,7 +53,7 @@ Exe.prototype.next = function(payload) {
     }
 };
 
-Exe.prototype.end = function(error, result) {
+Executor.prototype.end = function(error, result) {
     logger.log('info', 'End. Execution took: ' + (new Date().getTime() - this.start) + ' ms');
     this.callback(error, result);
 };
@@ -104,4 +104,4 @@ function fire(commands, callback) {
     });
 }
 
-module.exports = Exe;
+module.exports = Executor;

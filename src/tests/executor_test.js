@@ -1,8 +1,8 @@
-var Exe = require('../lib/exe'),
+var Executor = require('../lib/executor'),
     mockman = require('mockman'),
     assert = require('assert');
 
-describe('Exe', function() {
+describe('Executor', function() {
 
     after(function(done){
         mockman.close();
@@ -12,7 +12,7 @@ describe('Exe', function() {
     describe('run', function() {
         it('should call parser.next() once if no commands exist', function() {
             var mock_parser_builder = mockman.instance('../lib/parser').shouldReceive('next').once().willReturn(null);
-            var exe = new Exe(mock_parser_builder.getMock()());
+            var exe = new Executor(mock_parser_builder.getMock()());
             exe.start(function(error, result){} );
         });
 
@@ -21,7 +21,7 @@ describe('Exe', function() {
             
             // set up a mock that expects to be called once the script is complete and pass inside the callback function
             var mock_response = mockman.instance('response').shouldReceive('json').once().getMock()();
-            var exe = new Exe(mock_parser_builder.getMock()());
+            var exe = new Executor(mock_parser_builder.getMock()());
             exe.start(function(result) { mock_response.json(result); } );
         });
     });
