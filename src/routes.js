@@ -1,10 +1,7 @@
 var express = require('express'),
     Tokenizer = require('./lib/tokenizer'),
     Parser = require('./lib/parser'),
-    Exe = require('./lib/exe'),
-    Store = require('./lib/store'),
-    Config = require('./config');
-
+    Exe = require('./lib/exe');
 
 module.exports = (function() {
     'use strict';
@@ -18,11 +15,6 @@ module.exports = (function() {
     });
 
     routes.post('/', function(req, res) {
-        var store = new Store(
-            'mongodb://' + Config.mongo_host + '/' + Config.mongo_db,
-            Config.mongo_collection
-        );
-
         // accept a script in the body of the request
         var exe = new Exe(new Parser(new Tokenizer(req.body)));
         exe.start(function(err, result) {
