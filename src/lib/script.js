@@ -1,4 +1,6 @@
-var uniqid = require('uniqid');
+var uniqid = require('uniqid'),
+    Tokenizer = require('./tokenizer'),
+    Parser = require('./parser');
 
 /**
  * All properties should be internal
@@ -35,6 +37,25 @@ function Script(body, id, state, date) {
         enumerable: true,
         value: date || new Date()
     });
+
+    this.parser = new Parser(new Tokenizer(this.body));
+    
+    /**
+     * Return the next command to execute
+     */
+    this.next = function() {
+        var next = this.parser.next();
+        // update state here from parser's index function
+        return next;
+    };
+    
+    /**
+     * Return the Payload object, 
+     * ie. when the first element in the script is a Payload
+     */
+    this.payload = function() {
+
+    };
 };
 
 module.exports = Script;
