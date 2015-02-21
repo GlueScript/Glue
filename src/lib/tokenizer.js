@@ -30,6 +30,10 @@ function Tokenizer(string) {
             return new Token(tokens[index]);
         } 
     }
+
+    this.index = function() {
+        return index;
+    }
 }
 
 module.exports = Tokenizer;

@@ -84,4 +84,17 @@ describe('Tokenizer', function() {
             assert.equal('"dave"', tokenizer.peek().value);
         });
     });
+
+    describe('index', function() {
+        it('should return the index', function() {
+            var script = 'GET http://uri   POST    http://service';
+            var tokenizer = new Tokenizer(script);
+            assert.equal(0, tokenizer.index());
+            tokenizer.next();
+            assert.equal(1, tokenizer.index());
+            tokenizer.next();
+            assert.equal(2, tokenizer.index());
+        });
+
+    });
 });
