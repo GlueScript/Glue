@@ -36,9 +36,9 @@ csv:
     - "80"
 
 mongodb:
-  image: dockerfile/mongodb
-  volumes:
-    - ~/var/db/mongo:/data/db
+  image: timrodger/mongodb
+  ports:
+    - "27017"
 
 thing:
     image: timrodger/thing
