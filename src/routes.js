@@ -14,8 +14,13 @@ module.exports = (function() {
         });
     });
 
+    /**
+     * Use request Accept header to version this api
+     */
     routes.post('/', function(req, res) {
         // accept a script in the body of the request
+        // use ScriptBuilder to generate a Script
+        // pass Script to Executor constructor or start method along with current Payload = ''
         var exe = new Executor(new Parser(new Tokenizer(req.body)));
         exe.start(function(err, result) {
             // if error is set return a 400 response with result.content
