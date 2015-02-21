@@ -69,6 +69,10 @@ Parser.prototype.next = function() {
     }
 };
 
+Parser.prototype.index = function() {
+    return this.tokenizer.index();
+};
+
 /**
  * method is a Token instance
  */

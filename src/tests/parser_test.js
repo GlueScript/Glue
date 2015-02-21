@@ -277,4 +277,16 @@ describe('Parser', function() {
             assert.equal("Freddy", next.payload.value.name);
         });
     });
+
+    describe('index', function() {
+        it('should return the current index', function() {
+            var script = 'GET http://uri';
+            var parser = new Parser(new Tokenizer(script));
+            
+            assert.equal(0, parser.index());
+            parser.next();
+            // calling next reads two items into a single command
+            assert.equal(2, parser.index());
+        });
+    });
 });
