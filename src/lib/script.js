@@ -46,6 +46,7 @@ function Script(body, id, state, date) {
     this.next = function() {
         var next = this.parser.next();
         // update state here from parser's index function
+        this.state = this.parser.index();
         return next;
     };
     

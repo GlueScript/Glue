@@ -15,5 +15,16 @@ describe('Script', function() {
             assert(_.isDate(script.date), 'Expected script.date to be a Date');
         });
     });
+
+    describe('next', function() {
+        it('should return a command and update state', function() {
+            var body = 'GET https://xyz.net';
+            var script = new Script(body);
+            
+            var command = script.next();
+            assert(command instanceof Object);
+            assert(2 == script.state, 'Expected script state to be 2');
+        });
+    });
 });
 
