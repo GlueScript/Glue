@@ -1,43 +1,56 @@
-var uniqid = require('uniqid'),
-    Store = require('./store'),
+var Store = require('./store'),
     Config = require('../config'),
     Script = require('./script');
 
+/**
 var store = new Store(
     'mongodb://' + Config.mongo_host + '/' + Config.mongo_db,
     Config.mongo_collection
 );
+*/
 
-/**
- * Create a Script to be run
- */
-var generate = function(body) {
-    // generate an id for script
-    var script = new Script(body);
+(function() {
 
-    store.add(script.id, script, function(err, doc) {
-        if (!err){
-            console.log('Script Builder generate success: ' + JSON.stringify(doc));
-        } else {
-            console.log('Script Builder generate error: ' + err);
-        }
-    });
+    var builder = {};
+    builder.store = null;
+
+    builder.init = function(store) {
+        builder.store = store;
+    };
+
+    /**
+    * Create a Script to be run
+    */
+    builder.generate = function(body) {
+         // generate an id for script
+         var script = new Script(body);
+
+        builder.store.add(script.id, script, function(err, doc) {
+            if (!err){
+                console.log('Script Builder generate success: ' + JSON.stringify(doc));
+            } else {
+                console.log('Script Builder generate error: ' + err);
+            }
+        });
         
-    return script;
-};
+        return script;
+    };
 
-/**
- * load a stored script from its id string
- */
-var load = function(id) {
+    /**
+    * load a stored script from its id string
+    */
+    builder.load = function(id) {
 
-};
+    };
 
-/**
- * save the running state till a later callback to restart
- */
-var save = function(script) {
+    /**
+    * save the running state till a later callback to restart
+    */
+    builder.save = function(script) {
 
-};
+    };
 
-module.exports.generate = generate;
+    module.exports = builder;
+
+})();
+

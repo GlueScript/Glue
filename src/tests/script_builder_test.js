@@ -13,7 +13,8 @@ describe('ScriptBuilder', function() {
     describe('generate', function() {
         it('should create a Script', function() {
             // need to mock Store
-            //var mock_store_builder = mockman.instance('../lib/store').shouldReceive('add').once().willReturn(null);
+            var mock_store_builder = mockman.instance('../lib/store').shouldReceive('add').once().willReturn(null);
+            ScriptBuilder.init(mock_store_builder.getMock()());
             var script = 'GET https://xyz.net';
             var new_script = ScriptBuilder.generate(script);
 
