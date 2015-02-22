@@ -3,12 +3,19 @@
  */
 var server = require('../server'),
     request = require('supertest'),
-    nock = require('nock');
+    nock = require('nock'),
+    Config = require('../config');
+
 
 describe('server', function() {
 
     before(function(done) {
         server.start();
+        done();
+    });
+    
+    after(function(done) {
+        Config.getStore().clear();
         done();
     });
 

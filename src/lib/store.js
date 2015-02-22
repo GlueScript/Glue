@@ -57,6 +57,10 @@ Store.prototype.delete = function(id, callback) {
 
 };
 
+Store.prototype.clear = function() {
+    logger.log("Clear store");
+};
+
 Store.prototype.exec = function(func) {
     var store = this;
     MongoClient.connect(this.url, function(err, db) {
