@@ -8,7 +8,7 @@
     "type": "git"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha --recursive tests"
+    "test": "node_modules/.bin/mocha --recursive test"
   },
   "author": "Tim Rodger tim.rodger@gmail.com",
   "dependencies": {
