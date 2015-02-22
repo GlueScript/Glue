@@ -1,7 +1,8 @@
 var express = require('express'),
     Tokenizer = require('./lib/tokenizer'),
     Parser = require('./lib/parser'),
-    Executor = require('./lib/executor');
+    Executor = require('./lib/executor'),
+    logger = require('./lib/logger');
 
 module.exports = (function() {
     'use strict';
@@ -21,7 +22,7 @@ module.exports = (function() {
         // accept a script in the body of the request
         // use ScriptBuilder to generate a Script
         // pass Script to Executor constructor or start method along with current Payload = ''
-        var exe = new Executor(new Parser(new Tokenizer(req.body)));
+        var exe = new Executor(new Parser(new Tokenizer(req.body)), logger);
         exe.start(function(err, result) {
             // if error is set return a 400 response with result.content
             // result will be a Payload, use it's type to set content-type of response

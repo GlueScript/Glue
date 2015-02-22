@@ -2,22 +2,22 @@ var request = require('request'),
     Payload = require('./payload')
     PayloadBag = require('./payload_bag'),
     _ = require('underscore'),
-    logger = require('./logger'),
     async = require('async');
 
 /**
  * Executes an array of Command objects gotten in order from Parser
  * Passes the response from each command into the next command
 */
-function Executor(parser) {
+function Executor(parser, logger) {
     this.parser = parser;
+    Executor.prototype.logger = logger;
 };
 
 /**
  * Start running the commands from the script
  */
 Executor.prototype.start = function(callback) {
-    logger.log('info', 'Start');
+    this.logger.log('info', 'Start');
     this.callback = callback;
     this.start = new Date().getTime();
     this.next(new Payload(''));
@@ -54,7 +54,7 @@ Executor.prototype.next = function(payload) {
 };
 
 Executor.prototype.end = function(error, result) {
-    logger.log('info', 'End. Execution took: ' + (new Date().getTime() - this.start) + ' ms');
+    this.logger.log('info', 'End. Execution took: ' + (new Date().getTime() - this.start) + ' ms');
     this.callback(error, result);
 };
 
@@ -83,13 +83,13 @@ function fire(commands, callback) {
 
     // generate a request per item in payload for each command
     async.each(commands, function(command, cb){
-        logger.log('info', command.method + ' ' + command.uri);
+        Executor.prototype.logger.log('info', command.method + ' ' + command.uri);
         request(command, function(error, response, response_body) {
             if (!error && response.statusCode == 200) {
-                logger.log('info', 'Success: ' + command.uri + " " + response.headers['content-type']);
+                Executor.prototype.logger.log('info', 'Success: ' + command.uri + " " + response.headers['content-type']);
                 incoming.push(null, new Payload(response_body, response.headers['content-type']));
             } else {
-                logger.log('error', 'Error: ' + command.uri);
+                Executor.prototype.logger.log('error', 'Error: ' + command.uri);
                 incoming.push(error || 'Error ' + response.statusCode, new Payload(response_body));
             }
             // don't call callback with an error, deal with any response errors when all have completed
