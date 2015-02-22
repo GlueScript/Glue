@@ -1,13 +1,4 @@
-var Store = require('./store'),
-    Config = require('../config'),
-    Script = require('./script');
-
-/**
-var store = new Store(
-    'mongodb://' + Config.mongo_host + '/' + Config.mongo_db,
-    Config.mongo_collection
-);
-*/
+var Script = require('./script');
 
 (function() {
 

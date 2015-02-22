@@ -8,8 +8,8 @@ var request = require('request'),
  * Executes an array of Command objects gotten in order from Parser
  * Passes the response from each command into the next command
 */
-function Executor(parser, logger) {
-    this.parser = parser;
+function Executor(script, logger) {
+    this.script = script;
     Executor.prototype.logger = logger;
 };
 
@@ -28,7 +28,7 @@ Executor.prototype.start = function(callback) {
  * not all the previous response headers. 
  */
 Executor.prototype.next = function(payload) {
-    var next = this.parser.next();
+    var next = this.script.next();
     var that = this;
     if (next) {
         if (next.payload) {
