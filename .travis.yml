@@ -6,6 +6,9 @@ services:
 install:
     - cd src; npm install
 
+before_script:
+    - sleep 15
+
 script:
     - npm test
 
