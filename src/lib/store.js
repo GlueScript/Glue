@@ -54,13 +54,27 @@ Store.prototype.add = function(id, doc, callback) {
  * allow for variations on a single id
  */
 Store.prototype.delete = function(id, callback) {
-
+    callback('delete not implemented', null);
 };
 
-Store.prototype.clear = function() {
-    logger.log("Clear store");
+/**
+ * Remove all objects from this collection
+ */
+Store.prototype.clear = function(callback) {
+    this.exec(function(err, db, collection) {
+        if (err) {
+            return callback(err, null);
+        }
+
+       collection.remove({}, function(err, result) {
+            callback(err, result);
+       });
+    });
 };
 
+/**
+ * I don't see why this store connects to mongo for each operation
+*/
 Store.prototype.exec = function(func) {
     var store = this;
     MongoClient.connect(this.url, function(err, db) {

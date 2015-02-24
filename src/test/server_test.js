@@ -15,12 +15,10 @@ describe('server', function() {
     });
     
     after(function(done) {
-        Config.getStore().clear();
-        done();
+        Config.getStore().clear(done);
     });
 
     describe('GET /', function() {
-
         it('responds with json', function(done) {
             request(server.app)
                 .get('/')
@@ -30,7 +28,6 @@ describe('server', function() {
     });
 
     describe('POST /', function() {
-    
         it('responds with success for empty script', function(done) {
             request(server.app)
                 .post('/')
