@@ -1,5 +1,5 @@
 var request = require('request'),
-    Payload = require('./payload')
+    Payload = require('./payload'),
     PayloadBag = require('./payload_bag'),
     _ = require('underscore'),
     async = require('async');
