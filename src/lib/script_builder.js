@@ -18,9 +18,9 @@ var Script = require('./script');
 
         builder.store.add(script.id, script, function(err, doc) {
             if (!err){
-                console.log('Script Builder generate success: ' + JSON.stringify(doc));
+                console.log('Script Builder store script success: ' + JSON.stringify(doc));
             } else {
-                console.log('Script Builder generate error: ' + err);
+                console.log('Script Builder store script error: ' + err);
             }
         });
         
