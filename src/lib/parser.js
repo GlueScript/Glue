@@ -9,7 +9,7 @@ var _ = require('underscore'),
  */
 function Parser(tokenizer) {
     this.tokenizer = tokenizer;
-};
+}
 
 /**
  * Return a command object with a method and uri property
@@ -27,7 +27,7 @@ Parser.prototype.next = function() {
             if (token.value == 'split') {
                 return Obj.lock({method: null, uri: null, operator: token.value});
             } else if (token.value == 'pipe') {
-                // create command from next two tokens 
+                // create command from next two tokens
                 token = this.tokenizer.next();
                 if (token.isMethod()){
                     return {commands: [nextCommand(token, this.tokenizer)]};
@@ -89,6 +89,6 @@ function nextCommand(method, tokenizer) {
     } else {
         throw new Error('Invalid script. Expected a "uri" token, got nothing.');
     }
-};
+}
 
 module.exports = Parser;

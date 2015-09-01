@@ -109,6 +109,14 @@ describe('Parser', function() {
             assert.equal(null, parser.next());
         });
 
+        it('should reject pipe operator at script end', function() {
+            var script = 'GET http://uri >';
+            var parser = new Parser(new Tokenizer(script));
+
+            var command = parser.next().commands[0];
+            assert.throws(function () {parser.next();}, Error, 'Invalid script.');
+        });
+
         it('should reject two methods in a row', function() {
             var script = 'GET POST http://service';
             var parser = new Parser(new Tokenizer(script));
