@@ -13,7 +13,7 @@ if (process.env.MONGODB_PORT_27017_TCP_ADDR && process.env.MONGODB_PORT_27017_TC
 
 var mongo_db = process.env.MONGO_DB || 'glue';
 
-var mongo_collection = 'executions';
+var mongo_collection = process.env.MONGO_COLLECTION || 'executions';
 
 var mongo_url = 'mongodb://' + mongo_host +'/' + mongo_db;
 
