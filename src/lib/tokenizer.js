@@ -14,13 +14,13 @@ function Tokenizer(string) {
     */
     this.hasMore = function() {
         return (index < tokens.length);
-    }
+    };
 
     this.next = function() {
         if (that.hasMore()) {
          return new Token(tokens[index++]);
         } 
-    }
+    };
 
     /**
     * return the next token but do not move the cursor forwards
@@ -29,7 +29,7 @@ function Tokenizer(string) {
         if (that.hasMore()) {
             return new Token(tokens[index]);
         } 
-    }
+    };
 
     this.index = function() {
         return index;
