@@ -109,12 +109,18 @@ describe('Parser', function() {
             assert.equal(null, parser.next());
         });
 
-        it('should reject pipe operator at script end', function() {
+        it('should reject an operator at script end', function() {
             var script = 'GET http://uri >';
             var parser = new Parser(new Tokenizer(script));
 
             var command = parser.next().commands[0];
-            console.log(command);
+            assert.throws(function () {parser.next();}, Error);
+        });
+
+        it('should reject an operator after a method', function() {
+            var script = 'GET > http://uri';
+            var parser = new Parser(new Tokenizer(script));
+
             assert.throws(function () {parser.next();}, Error);
         });
 
@@ -123,6 +129,15 @@ describe('Parser', function() {
             var parser = new Parser(new Tokenizer(script));
 
             assert.throws(function () {parser.next();}, Error, 'Invalid script. Expected a uri.');
+        });
+
+        it('should reject two uris in a row', function() {
+            var script = 'GET http://a.net http://service';
+            var parser = new Parser(new Tokenizer(script));
+
+            parser.next();
+
+            assert.throws(function () {parser.next();}, Error);
         });
 
         it('should handle group commands', function() {
@@ -158,7 +173,7 @@ describe('Parser', function() {
             
         });
 
-        it('should throw an error for group without end', function() {
+        it('should throw an error for groups without end', function() {
             var script = 'GET http://uri + ( POST http://a POST http://b POST http://c';
             var parser = new Parser(new Tokenizer(script));
 
@@ -170,7 +185,7 @@ describe('Parser', function() {
             
         });
 
-        it('should throw an error for group that starts with uri', function() {
+        it('should throw an error for groups that start with uri', function() {
             var script = 'GET http://uri + ( http://a POST http://b )';
             var parser = new Parser(new Tokenizer(script));
 
@@ -180,6 +195,30 @@ describe('Parser', function() {
 
             assert.throws(function () {parser.next();}, Error, 'Invalid script. Group must start with a uri');
             
+        });
+
+        it('should throw an error for groups that start with an operator', function() {
+            var script = 'GET http://uri + ( > http://a POST http://b )';
+            var parser = new Parser(new Tokenizer(script));
+
+            var command = parser.next().commands[0];
+            assert.equal('GET', command.method);
+            assert.equal('http://uri', command.uri);
+
+            assert.throws(function () {parser.next();}, Error, 'Invalid script. Group must start with a uri');
+
+        });
+
+        it('should throw an error for groups that contain an operator', function() {
+            var script = 'GET http://uri + (GET http://a > POST http://b )';
+            var parser = new Parser(new Tokenizer(script));
+
+            var command = parser.next().commands[0];
+            assert.equal('GET', command.method);
+            assert.equal('http://uri', command.uri);
+
+            assert.throws(function () {parser.next();}, Error, 'Invalid script. Group must start with a uri');
+
         });
 
         it('should handle groups in the middle of scripts', function() {
