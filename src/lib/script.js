@@ -57,7 +57,7 @@ function Script(body, id, state, date) {
     this.payload = function() {
 
     };
-};
+}
 
 module.exports = Script;
 

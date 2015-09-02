@@ -82,8 +82,10 @@ function fire(commands, callback) {
     var incoming = new PayloadBag();
 
     // generate a request per item in payload for each command
-    async.each(commands, function(command, cb){
+    async.each(commands, function(command, cb) {
+
         Executor.prototype.logger.log('info', command.method + ' ' + command.uri);
+
         request(command, function(error, response, response_body) {
             if (!error && response.statusCode == 200) {
                 Executor.prototype.logger.log('info', 'Success: ' + command.uri + " " + response.headers['content-type']);
@@ -95,6 +97,7 @@ function fire(commands, callback) {
             // don't call callback with an error, deal with any response errors when all have completed
             cb();
         });
+
     }, function(err) {
         if (!incoming.errors()) { 
             callback(null, incoming.join());

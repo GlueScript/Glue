@@ -18,8 +18,10 @@ function Tokenizer(string) {
 
     this.next = function() {
         if (that.hasMore()) {
-         return new Token(tokens[index++]);
-        } 
+            return new Token(tokens[index++]);
+        }
+
+        throw new Error('No more tokens');
     };
 
     /**
@@ -28,7 +30,9 @@ function Tokenizer(string) {
     this.peek = function() {
         if (that.hasMore()) {
             return new Token(tokens[index]);
-        } 
+        }
+
+        throw new Error('No more tokens');
     };
 
     this.index = function() {

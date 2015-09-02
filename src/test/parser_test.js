@@ -114,7 +114,8 @@ describe('Parser', function() {
             var parser = new Parser(new Tokenizer(script));
 
             var command = parser.next().commands[0];
-            assert.throws(function () {parser.next();}, Error, 'Invalid script.');
+            console.log(command);
+            assert.throws(function () {parser.next();}, Error);
         });
 
         it('should reject two methods in a row', function() {
@@ -283,6 +284,13 @@ describe('Parser', function() {
 
             assert.equal('application/json', next.payload.type);
             assert.equal("Freddy", next.payload.value.name);
+        });
+
+        it('should reject payload only scripts', function() {
+            var script = '{ "name" : "Freddy" }';
+            var parser = new Parser(new Tokenizer(script));
+            assert.throws(function () {parser.next();}, Error);
+
         });
     });
 

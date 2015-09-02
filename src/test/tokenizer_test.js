@@ -55,10 +55,10 @@ describe('Tokenizer', function() {
             assert.equal('POST', tokenizer.next().value);
             assert.equal('http://service', tokenizer.next().value);
         });
-        it('should return undefined when no tokens exist', function(){
+        it('should throw an exception when no tokens exist', function(){
             var script = '';
             var tokenizer = new Tokenizer(script);
-            assert.equal(undefined, tokenizer.next());
+            assert.throws(function () {tokenizer.next();}, Error);
         });
     });
 
@@ -82,6 +82,11 @@ describe('Tokenizer', function() {
             assert.equal('"name":', tokenizer.peek().value);
             tokenizer.next();
             assert.equal('"dave"', tokenizer.peek().value);
+        });
+        it('should throw an exception when no tokens exist', function(){
+            var script = '';
+            var tokenizer = new Tokenizer(script);
+            assert.throws(function () {tokenizer.peek();}, Error);
         });
     });
 
